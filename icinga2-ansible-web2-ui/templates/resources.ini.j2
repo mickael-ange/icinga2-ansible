@@ -1,0 +1,24 @@
+; {{ ansible_managed }}
+; resources.ini providing the details for the Icinga Web 2 and Icinga 2 IDO database configuration.
+
+[{{ icinga2_web2_resource }}]
+type = "db"
+db = "{{ icinga2_web2_backend }}"
+host = "{{ icinga2_web2_db_host }}"
+port = "{{ icinga2_web2_db_port }}"
+dbname = "{{ icinga2_web2_db }}"
+username = "{{ icinga2_web2_db_user }}"
+password = "{{ icinga2_web2_db_pass }}"
+charset = ""
+persistent = "0"
+
+[{{ icinga2_ido_resource }}]
+type = "db"
+db = "{{ icinga2_ido_backend }}"
+host = "{{ icinga2_ido_db_host }}"
+port = "{{ icinga2_ido_db_port }}"
+dbname = "{{ icinga2_ido_db }}"
+username = "{{ icinga2_ido_db_user }}"
+password = "{{ icinga2_ido_db_pass }}"
+charset = ""
+persistent = "0"

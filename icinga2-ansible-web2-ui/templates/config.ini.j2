@@ -1,0 +1,17 @@
+; {{ ansible_managed }}
+; config.ini defining general application settings.
+
+[global]
+show_stacktraces = "1"
+config_backend = "db"
+config_resource = "{{ icinga2_web2_resource }}"
+
+[logging]
+log = "syslog"
+level = "INFO"
+application = "icingaweb2"
+
+
+[preferences]
+type = "db"
+resource = "icingaweb2"

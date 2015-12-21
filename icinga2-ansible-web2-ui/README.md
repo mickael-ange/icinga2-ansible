@@ -18,10 +18,13 @@ Example Playbook
 
 ```yaml
 ---
-- hosts: MonitoringServers
+- hosts: monitoring_servers
   roles:
-
+   # You can use librarian-ansible: role "php", github: "geerlingguy/ansible-role-php"
+   - role: php
+     become: yes
    - role: icinga2-ansible-no-ui
+     become: yes
      icinga2_conf_global: |
        include "constants.conf"
        include "zones.conf"
@@ -34,21 +37,13 @@ Example Playbook
           "-H", "$address$",
               "-c", "$remote_nrpe_command$",
      tags: icinga2-no-ui
-
-   - role: icinga2-ansible-web2-ui
-     icinga2_web2_db_pass: "CHANGEME"
-     icinga2_ido_mysql_configuration: |
-       library "db_ido_mysql"
-
-       object IdoMysqlConnection "ido-mysql" {
-         user = "{{ icinga2_web2_db_user }}"
-         password = "{{ icinga2_web2_db_pass }}"
-         host = "localhost"
-         database = "{{ icinga2_web2_db }}"
-       }
-     tags: icinga2-ansible-web2-ui
+   -  role: icinga2-ansible-web2-ui
+      become: yes
+      tags: icinga2-ansible-web2-ui
 
 ```
+
+Then Go to http://IP/icingaweb2 and use icingaadmin/icingaadmin to login.
 
 Role Variables
 --------------

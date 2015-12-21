@@ -1,0 +1,10 @@
+GIT
+  remote: https://github.com/geerlingguy/ansible-role-php
+  ref: master
+  sha: 714e23e92ea3c2764a8d5f70fdcaa443cb28ea32
+  specs:
+    php (0.0.0)
+
+DEPENDENCIES
+  php (>= 0)
+

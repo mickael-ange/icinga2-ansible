@@ -1,14 +1,52 @@
 ---
 # defaults file for icinga2-ansible-web2-ui
 
-icinga2_web2_db: "icinga"
-icinga2_web2_db_pass: "icinga"
-icinga2_web2_db_user: "icinga"
-icinga2_web_mysql_schema_rh_6: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
-icinga2_ido_mysql_conf: "/etc/icinga2/features-available/ido-mysql.conf"
+# Defaults to: mysql
+# icinga2_ido_backend: mysql|psql
+# TODO: implement for PostgreSQL
+icinga2_ido_backend: mysql
+icinga2_ido_resource: icinga_ido
+icinga2_ido_db: icinga
+icinga2_ido_db_host: localhost
+icinga2_ido_db_port: 3306
+icinga2_ido_db_pass: icinga
+icinga2_ido_db_user: icinga
+# admin user to create databases
+icinga2_ido_db_admin_user: root
+icinga2_ido_db_admin_pass: ''
+icinga2_ido_mysql_schema_rh_6: /usr/share/icinga2-ido-mysql/schema/mysql.sql
+icinga2_ido_mysql_conf: /etc/icinga2/features-available/ido-mysql.conf
 icinga2_ido_mysql_configuration: "none"
 enablerepo: "base"
 
+# Provision most of dependencies to get Icinga up, you still need to provision PHP, use librarian-ansible with:
+#  role "php", github: "geerlingguy/ansible-role-php"
+icinga2_web2_standalone: true
+# Set icinga2_web2_setup_with_wizard to true if you want to use icingaweb2 wizard to configure your server.
+# When icinga2_web2_setup_with_wizard is set to false, icingaweb2 is configured automatically and creates an admin user (icinga2_web2_admin_username)
+icinga2_web2_setup_with_wizard: false
+# Set icinga2_web2_setup_reinstate to true if you want to reinstate INI config files -> might be destructive so be careful
+icinga2_web2_setup_reinstate: false
+# Defaults to: mysql
+# icinga2_ido_backend: mysql|psql
+# TODO: implement for PostgreSQL
+icinga2_web2_backend: mysql
+icinga2_web2_resource: icingaweb_db
+icinga2_web2_db: icingaweb2
+icinga2_web2_db_host: localhost
+icinga2_web2_db_port: 3306
+icinga2_web2_db_pass: icingaweb2
+icinga2_web2_db_user: icingaweb2
+# admin user to create databases
+icinga2_web2_db_admin_user: root
+icinga2_web2_db_admin_pass: ''
+icinga2_web2_mysql_schema_rh_6: /usr/share/doc/icingaweb2/schema/mysql.schema.sql
+icinga2_web2_ui_port: 80
 icinga2_web2_ui_rpm:
  - { package: "icingaweb2" }
  - { package: "icingacli" }
+
+icinga2_web2_admin_role: Administrators
+icinga2_web2_admin_username: icingaadmin
+# Defaults: admin password defaults to "icingaadmin" ($1$Eo9Dehff$puwt5xO8bJ6Crrb60J7Wc0)
+icinga2_web2_admin_password_hash: '$1$Eo9Dehff$puwt5xO8bJ6Crrb60J7Wc0'

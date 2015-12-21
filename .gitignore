@@ -4,3 +4,6 @@
 *.ini
 *.pem
 site.yml
+librarian_roles/
+tmp/
+.vagrant/

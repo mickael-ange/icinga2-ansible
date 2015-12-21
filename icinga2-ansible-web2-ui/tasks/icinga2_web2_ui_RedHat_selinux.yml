@@ -1,0 +1,8 @@
+---
+- name: "Make SElinux happy"
+  become: yes
+  command: "{{ item }}"
+  with_items:
+    - semanage fcontext -a -t httpd_sys_rw_content_t "/etc/icingaweb2(/.*)?"
+    - restorecon -Rv "/etc/icingaweb2"
+  changed_when: False

@@ -1,0 +1,5 @@
+[vagrant]
+icinga2-web2     ansible_ssh_host=172.16.1.2
+
+[monitoring_servers]
+icinga2-web2

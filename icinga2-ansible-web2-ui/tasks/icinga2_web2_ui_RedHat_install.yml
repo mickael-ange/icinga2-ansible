@@ -1,47 +1,37 @@
 ---
-- name: Install Icinga2 IDO modules on RedHat OS family
-  yum: name=icinga2-ido-mysql
-       state=latest
-
-- name: Create a Database for Icinga2
-  mysql_db: name={{ icinga2_web2_db }}
-            state=present
-  register: icinga_web2_db
-
-- name: Create Icinga Database User and configure Grants
-  mysql_user: name={{ icinga2_web2_db }}
-              password={{ icinga2_web2_db_pass }}
-              state=present
-              priv="{{ icinga2_web2_db_user }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
-
-- name: Import the IDO Schema on Icinga Web Database - RH6 (only once)
-  mysql_db: name={{ icinga2_web2_db }}
-            state=import
-            target={{ icinga2_web_mysql_schema_rh_6 }}
-  when: ansible_distribution_major_version == "6" and icinga_web2_db.changed == true
-
-- name: Configure Icinga2 Ido Mysql Feature
-  template: src=ido-mysql.conf.j2
-            dest={{ icinga2_ido_mysql_conf }}
-            backup=yes
-            owner=icinga
-            group=icinga
-            mode=0640
-
-- name: Enable Icinga2 Ido Mysql Feature
-  command: "icinga2 feature enable ido-mysql"
-  register: features_result
-  changed_when: "'for these changes to take effect' in features_result.stdout"
-  notify:
-   - restart icinga2
-
 - name: Install Icinga Web2 on RedHat OS family
-  yum: name={{ item.package }}
-       state=latest
-       enablerepo={{ enablerepo }}
+  yum:
+    name: "{{ item.package }}"
+    state: latest
+    enablerepo: "{{ enablerepo }}"
   with_items: icinga2_web2_ui_rpm
   tags: icinga2-ansible-web2-ui-install
+  register: icinga2_web2_ui_rpm
 
-- name: Icinga Web2 Installation finished (RH)
-  debug: msg="Now generate a token with 'icingacli setup token create' and go at http://IP//icingaweb2/setup to continue the installation"
-  tags: icinga2-ansible-web2-ui-install
+- include: icinga2_web2_ui_RedHat_install_ido_mysql.yml
+  when: icinga2_ido_backend == 'mysql'
+
+- include: icinga2_web2_ui_RedHat_install_web2_mysql.yml
+  when: icinga2_web2_backend == 'mysql'
+
+- name: Ensure httpd enabled
+  become: yes
+  service:
+    name: httpd
+    enabled: yes
+
+- name: Ensure httpd started
+  become: yes
+  service: 
+    name: httpd
+    state: started
+
+- name: Open Icinga Web2 port
+  become: yes
+  firewalld:
+    port: "{{ item }}/tcp"
+    permanent: true
+    immediate: yes
+    state: enabled
+  with_items:
+    - "{{ icinga2_web2_ui_port }}"

@@ -1,0 +1,21 @@
+---
+# See https://github.com/Icinga/icingaweb2/blob/master/doc/installation.md
+
+# We likely don't want to run this setup twice since it can mess up any configuration you may have done from the UI.
+# So the idea is to check if we have a user created in the DB, if it is the case then we skip the setup.
+# We can force to reinstate with extra_vars icinga2_web2_setup_reinstate=true, but at your own risk, really!
+
+# When setup is done we supposed to have a user created. Let's check that:
+- include: icinga2_web2_ui_get_icingaweb_user.yml
+
+- name: Create Icinga token
+  become: yes
+  command: icingacli setup token create
+  args:
+    creates: /etc/icingaweb2/setup.token
+  when: icinga2_web2_setup_with_wizard and (icingaweb_users.stdout == "")
+
+- name: Icinga Web2 Installation finished (RH)
+  debug: msg="Now go at http://IP/icingaweb2/setup to continue the installation"
+  tags: icinga2-ansible-web2-ui-install
+  when: icinga2_web2_setup_with_wizard

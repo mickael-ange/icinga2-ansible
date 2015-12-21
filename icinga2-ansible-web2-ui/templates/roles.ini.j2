@@ -1,0 +1,7 @@
+; {{ ansible_managed }}
+; roles.ini granting the previously added icingaadmin user all permissions.
+
+[{{ icinga2_web2_admin_role }}]
+users = "{{ icinga2_web2_admin_username }}"
+permissions = "*"
+groups = "{{ icinga2_web2_admin_role }}"

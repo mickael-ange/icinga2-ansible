@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+#^syntax detection
+# See https://github.com/bcoe/librarian-ansible
+
+role "php", github: "geerlingguy/ansible-role-php"

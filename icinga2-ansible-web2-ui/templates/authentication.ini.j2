@@ -1,0 +1,6 @@
+; {{ ansible_managed }}
+; authentication.ini for e.g. using the previously created database.
+
+[icingaweb2]
+backend = "db"
+resource = "{{ icinga2_web2_resource }}"

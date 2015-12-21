@@ -1,0 +1,31 @@
+---
+- name: Get admin user from icingaweb2 DB
+  command: > 
+    mysql -h {{ icinga2_web2_db_host }}
+      -P {{ icinga2_web2_db_port }}
+      -u{{ icinga2_web2_db_user }}
+      -p{{ icinga2_web2_db_pass }}
+      {{ icinga2_web2_db }} 
+      --execute="SELECT * FROM icingaweb_user WHERE name='{{ icinga2_web2_admin_username }}'"
+      --batch --skip-column-names
+  no_log: True
+  changed_when: False
+  register: icingaweb_admin
+
+- name: Copy create-admin.sql script
+  template:
+    src: create-admin.sql.j2
+    dest: /tmp/create-admin.sql
+  register: create_admin_sql
+  when: icingaweb_admin.stdout == ""
+
+- name: Create Icinga admin user
+  mysql_db:
+    name: "{{ icinga2_web2_db }}"
+    login_user: "{{ icinga2_web2_db_user }}"
+    login_password: "{{ icinga2_web2_db_pass }}"
+    login_host: "{{ icinga2_web2_db_host }}"
+    login_port: "{{ icinga2_web2_db_port }}"
+    state: import
+    target: /tmp/create-admin.sql
+  when: icingaweb_admin.stdout == ""

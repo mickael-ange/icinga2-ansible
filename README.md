@@ -9,6 +9,13 @@ For details checks [doc/about.md](doc/about.md).
 
 The documentation is located in the doc/ directory. This documentation is, as the Icinga2-ansible, currently under development and the various information provided may be subject to changes in the near future.
 
+* [about.md](doc/about.md)
+* [adding-hosts.md](doc/adding-hosts.md)
+* [getting-started.md](doc/getting-started.md)
+* [icinga2-web2-vagrant.md](doc/icinga2-web2-vagrant.md)
+* [installation.md](doc/installation.md)
+
 ## Support
 
 Check the project website at http://www.icinga.org for status updates and https://support.icinga.org if you want to contact us.
+

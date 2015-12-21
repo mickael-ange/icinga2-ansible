@@ -1,0 +1,13 @@
+---
+- name: Ensure Firewalld installed
+  become: yes
+  yum: 
+    name: firewalld
+    state: present
+
+- name: Ensure Firewalld Enabled
+  become: yes
+  service:
+    name: firewalld
+    enabled: yes
+    state: started

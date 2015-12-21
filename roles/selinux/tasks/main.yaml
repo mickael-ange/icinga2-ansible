@@ -1,0 +1,9 @@
+---
+- name: Install Selinux management tools
+  become: yes
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libselinux-python
+    - policycoreutils-python

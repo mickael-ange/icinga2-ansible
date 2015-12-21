@@ -1,0 +1,3 @@
+---
+- include: icinga2_web2_ui_create_admin_user_mysql.yml
+  when: icinga2_web2_backend == 'mysql'

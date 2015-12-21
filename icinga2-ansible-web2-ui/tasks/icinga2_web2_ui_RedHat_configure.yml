@@ -1,0 +1,28 @@
+---
+# See https://github.com/Icinga/icingaweb2/blob/master/doc/installation.md
+
+- name: Create icingaweb2 group
+  become: yes
+  group:
+    name: icingaweb2
+    state: present
+    system: yes
+
+- name: Add httpd as member of icingaweb2
+  user:
+    name: httpd
+    append: yes
+    groups: icingaweb2
+
+- name: Create some directories
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: apache
+    group: icingaweb2
+    mode: 0770
+  with_items:
+    - /etc/icingaweb2/modules
+    - /etc/icingaweb2/modules/monitoring
+    - /etc/icingaweb2/enabledModules

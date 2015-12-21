@@ -1,0 +1,6 @@
+; {{ ansible_managed }}
+; backends.ini referencing the Icinga 2 DB IDO resource.
+
+[icinga]
+type = "ido"
+resource = "{{ icinga2_ido_resource }}"
