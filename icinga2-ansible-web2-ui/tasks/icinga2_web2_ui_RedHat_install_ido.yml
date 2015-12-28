@@ -1,0 +1,29 @@
+---
+- include_vars: "{{ icinga2_ido_backend }}-ido-backend.yml"
+
+- name: Install packages for IDO on RedHat OS family
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: icinga2_ido_yum_packages
+
+- include: mysql/install_ido.yml
+  when: icinga2_ido_backend == 'mysql'
+
+- include: pgsql/install_ido.yml
+  when: icinga2_ido_backend == 'pgsql'
+
+- name: Configure Icinga2 Ido Feature
+  template:
+    src: "ido-{{ icinga2_ido_backend }}.conf.j2"
+    dest: "{{ icinga2_ido_feature_conf }}"
+    backup: yes
+    owner: icinga
+    group: icinga
+
+- name: Enable Icinga2 Ido Feature
+  command: "icinga2 feature enable ido-{{ icinga2_ido_backend }}"
+  register: features_result
+  changed_when: "'for these changes to take effect' in features_result.stdout"
+  notify:
+   - restart icinga2

@@ -1,0 +1,23 @@
+---
+- name: Assert that required variables are defined
+  assert:
+    that:
+      - extra_path is defined
+      - extra_path_user is defined
+
+# Fully quoted because of the ': ' on the line
+# FIXME: buggy with username root => /root/.bashrc not created
+- name: "Add extra paths to PATH env."
+  become: yes
+  become_user: "{{ extra_path_user }}"
+  lineinfile: >
+    dest="{{ ansible_env.HOME }}/.bashrc"
+    state=present
+    create=yes
+    backup=yes
+    insertafter=EOF
+    line="export PATH=\"{{ extra_path }}:$PATH\""
+
+#backrefs=yes
+#regexp='PATH=(["]*)((?!.*?{{ extra_path }}).*?)(["]*)$'
+#line="PATH=\1\2:{{ extra_path }}\3"

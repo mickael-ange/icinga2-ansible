@@ -1,0 +1,40 @@
+---
+# --------- Icingaweb2 DB | MYSQL
+
+- name: MYSQL | Create a Database for Icingaweb2
+  mysql_db: 
+    name: "{{ item.name }}"
+    login_user: "{{ icinga2_web2_db_admin_user }}"
+    login_password: "{{ icinga2_web2_db_admin_pass }}"
+    login_host: "{{ icinga2_web2_db_host }}"
+    login_port: "{{ icinga2_web2_db_port }}"
+    state: present
+  register: icinga_web2_db
+  with_items:
+    - { name: "{{ icinga2_web2_db }}" }
+
+- name: MYSQL | Import the Icingaweb2 Schema on Icinga Web Database
+  mysql_db:
+    name: "{{ item.name }}"
+    login_user: "{{ icinga2_web2_db_admin_user }}"
+    login_password: "{{ icinga2_web2_db_admin_pass }}"
+    login_host: "{{ icinga2_web2_db_host }}"
+    login_port: "{{ icinga2_web2_db_port }}"
+    state: import
+    target: "{{ icinga2_web2_schema }}"
+  with_items:
+    - { name: "{{ icinga2_web2_db }}" }
+  when: icinga_web2_db.changed
+
+- name: MYSQL | Create Icingaweb2 Database User and configure Grants
+  mysql_user:
+    name: "{{ item.name }}"
+    password: "{{ icinga2_web2_db_pass }}"
+    login_user: "{{ icinga2_web2_db_admin_user }}"
+    login_password: "{{ icinga2_web2_db_admin_pass }}"
+    login_host: "{{ icinga2_web2_db_host }}"
+    login_port: "{{ icinga2_web2_db_port }}"
+    state: present
+    priv: "{{ item.db }}.*:{{ item.privs }}"
+  with_items:
+    - { db: "{{ icinga2_web2_db }}", name: "{{ icinga2_web2_db_user }}", privs: "{{ icinga2_web2_db_user_table_privileges }}" }

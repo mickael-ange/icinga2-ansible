@@ -1,3 +1,6 @@
 ---
-- include: icinga2_web2_ui_create_admin_user_mysql.yml
+- include: mysql/create_admin_user.yml
   when: icinga2_web2_backend == 'mysql'
+
+- include: pgsql/create_admin_user.yml
+  when: icinga2_web2_backend == 'pgsql'

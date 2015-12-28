@@ -1,0 +1,73 @@
+---
+# /var/lib/pgsql/9.4/data/pg_hba.conf
+#host    icingaweb2  icingaweb2  172.16.8.0/24           md5
+#host    icingaweb2  icingaweb2  127.0.0.1/32            md5
+#host    icingaweb2  icingaweb2  ::1/128                 md5
+#host    icingaweb2  postgres    172.16.8.0/24           trust
+
+# --------- Icingaweb2 DB - PGSQL
+
+- name: PGSQL | Create a Database for Icingaweb2
+  postgresql_db: 
+    name: "{{ item.name }}"
+    login_host: "{{ icinga2_web2_db_host }}"
+    port: "{{ icinga2_web2_db_port }}"
+    login_user: "{{ icinga2_web2_db_admin_user }}"
+    login_password: "{{ icinga2_web2_db_admin_pass }}"
+    encoding: 'UTF-8'
+    state: present
+  register: icinga_web2_db
+  with_items:
+    - { name: "{{ icinga2_web2_db }}" }
+
+- name: PGSQL | Import the Icingaweb2 Schema on Icinga Web Database
+  environment:
+    PGPASSWORD: "{{ icinga2_web2_db_admin_pass }}"
+  shell: psql -h "{{ icinga2_web2_db_host }}" -d "{{ item.name }}" -U "{{ icinga2_web2_db_admin_user }}" < "{{ icinga2_web2_schema }}"
+  with_items:
+    - { name: "{{ icinga2_web2_db }}" }
+  when: icinga_web2_db.changed
+
+- name: PGSQL | Create Icingaweb2 Database User and configure Grants
+  postgresql_user:
+    name: "{{ item.name }}"
+    password: "{{ icinga2_web2_db_pass }}"
+    expires: "{{ icinga2_web2_db_pass_expires }}"
+    db: "{{ item.db }}"
+    login_host: "{{ icinga2_web2_db_host }}"
+    port: "{{ icinga2_web2_db_port }}"
+    login_user: "{{ icinga2_web2_db_admin_user }}"
+    login_password: "{{ icinga2_web2_db_admin_pass }}"
+    state: present
+  with_items:
+    - { db: "{{ icinga2_web2_db }}", name: "{{ icinga2_web2_db_user }}" }
+
+- name: PGSQL | Set icingaweb2 user's TABLE privileges
+  postgresql_privs:
+    database: "{{ item.database }}"
+    login_host: "{{ icinga2_web2_db_host }}"
+    port: "{{ icinga2_web2_db_port }}"
+    login_user: "{{ icinga2_web2_db_admin_user }}"
+    login_password: "{{ icinga2_web2_db_admin_pass }}"
+    privs: "{{ item.privs }}"
+    roles: "{{ item.roles }}"
+    type: table
+    objs: ALL_IN_SCHEMA
+    state: present
+  with_items:
+    - { database: "{{ icinga2_web2_db }}", roles: "{{ icinga2_web2_db_user }}", privs: "{{ icinga2_web2_db_user_table_privileges }}" }
+
+- name: PGSQL | Set icingaweb2 user's SEQUENCE privileges
+  postgresql_privs:
+    database: "{{ item.database }}"
+    login_host: "{{ icinga2_web2_db_host }}"
+    port: "{{ icinga2_web2_db_port }}"
+    login_user: "{{ icinga2_web2_db_admin_user }}"
+    login_password: "{{ icinga2_web2_db_admin_pass }}"
+    privs: "{{ item.privs }}"
+    roles: "{{ item.roles }}"
+    type: sequence
+    objs: ALL_IN_SCHEMA
+    state: present
+  with_items: 
+    - { database: "{{ icinga2_web2_db }}", roles: "{{ icinga2_web2_db_user }}", privs: "{{ icinga2_web2_db_user_sequence_privileges }}" }

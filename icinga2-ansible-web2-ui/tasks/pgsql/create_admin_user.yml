@@ -1,0 +1,28 @@
+---
+- name: PGSQL | Get admin user from icingaweb2 DB
+  environment:
+    PGPASSWORD: "{{ icinga2_web2_db_pass }}"
+  command: > 
+    psql -h {{ icinga2_web2_db_host }}
+      -p {{ icinga2_web2_db_port }}
+      -U {{ icinga2_web2_db_user }}
+      -d {{ icinga2_web2_db }}
+      --command="SELECT * FROM icingaweb_user WHERE name='{{ icinga2_web2_admin_username }}'"
+      --tuples-only
+  changed_when: False
+  register:  icingaweb_admin
+
+- name: PGSQL | Copy create-admin.sql script
+  template:
+    src: ../../templates/create-admin.sql.j2
+    dest: /tmp/create-admin.sql
+  register: create_admin_sql
+  when: icingaweb_admin.stdout == ""
+
+- name: PGSQL | Create Icinga admin user
+  environment:
+    PGPASSWORD: "{{ icinga2_web2_db_pass }}"
+  shell: psql -h "{{ icinga2_web2_db_host }}" -d "{{ item.name }}" -U "{{ icinga2_web2_db_user }}" < /tmp/create-admin.sql
+  with_items:
+    - { name: "{{ icinga2_web2_db }}" }
+  when: icingaweb_admin.stdout == ""

@@ -1,0 +1,23 @@
+---
+- name: Assert on CentOS 7
+  assert:
+    that:
+      - ansible_distribution == 'CentOS'
+      - ansible_distribution_version.split(".")[0] == '7'
+
+- name: Exclude postgresql* from CentOS-Base (CentOS 7 only)
+  become: yes
+  copy:
+    src: CentOS-Base.repo
+    dest: /etc/yum.repos.d/CentOS-Base.repo
+
+- name: Download PostgreSQL 9.4 PGDG repo
+  get_url:
+    url: http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-1.noarch.rpm
+    dest: /var/tmp/pgdg-centos94-9.4-1.noarch.rpm
+
+- name: Install PostgreSQL 9.4 PGDG repo
+  become: yes
+  yum:
+    name: /var/tmp/pgdg-centos94-9.4-1.noarch.rpm
+    state: present

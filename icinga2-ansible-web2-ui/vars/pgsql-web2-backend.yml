@@ -1,0 +1,8 @@
+---
+icinga2_web2_yum_packages:
+  - python-psycopg2
+
+icinga2_web2_db_user_table_privileges: SELECT,INSERT,UPDATE,DELETE
+icinga2_web2_db_user_sequence_privileges: USAGE
+
+icinga2_web2_schema: /usr/share/doc/icingaweb2/schema/pgsql.schema.sql

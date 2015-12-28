@@ -1,0 +1,17 @@
+---
+- name: PGSQL | Get user from icingaweb2 DB
+  environment:
+    PGPASSWORD: "{{ icinga2_web2_db_pass }}"
+  command: > 
+    psql -h {{ icinga2_web2_db_host }}
+      -p {{ icinga2_web2_db_port }}
+      -U {{ icinga2_web2_db_user }}
+      -d {{ icinga2_web2_db }}
+      --command="SELECT * FROM icingaweb_user"
+      --tuples-only
+  changed_when: False
+  register:  pgsql_icingaweb_users
+
+- set_fact: 
+    icingaweb_user_does_not_exist: true
+  when: (pgsql_icingaweb_users.stdout is defined) and (pgsql_icingaweb_users.stdout == "")

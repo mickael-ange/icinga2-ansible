@@ -26,3 +26,9 @@
     - /etc/icingaweb2/modules
     - /etc/icingaweb2/modules/monitoring
     - /etc/icingaweb2/enabledModules
+
+- include: icinga2_web2_ui_configure_with_wizard.yml
+  when: icinga2_web2_setup_with_wizard
+
+- include: icinga2_web2_ui_configure_without_wizard.yml
+  when: not icinga2_web2_setup_with_wizard

@@ -1,5 +1,12 @@
 ---
 # tasks file for icinga2-ansible-web2-ui
+- name: Assert that required variables are defined
+  assert:
+    that:
+      - icinga2_ido_backend is defined
+      - icinga2_ido_backend == 'pgsql' or icinga2_ido_backend == 'mysql'
+      - icinga2_web2_backend is defined
+      - icinga2_web2_backend == 'pgsql' or icinga2_web2_backend == 'mysql'
 
 - include: icinga2_web2_ui_RedHat.yml
   when: ansible_os_family == 'RedHat'

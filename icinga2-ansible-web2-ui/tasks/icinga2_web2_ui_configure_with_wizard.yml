@@ -13,7 +13,7 @@
   command: icingacli setup token create
   args:
     creates: /etc/icingaweb2/setup.token
-  when: icinga2_web2_setup_with_wizard and (icingaweb_users.stdout == "")
+  when: icinga2_web2_setup_with_wizard and icingaweb_user_does_not_exist
 
 - name: Icinga Web2 Installation finished (RH)
   debug: msg="Now go at http://IP/icingaweb2/setup to continue the installation"

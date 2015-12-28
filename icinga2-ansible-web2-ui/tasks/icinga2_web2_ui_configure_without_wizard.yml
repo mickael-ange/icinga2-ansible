@@ -18,7 +18,7 @@
     group: icingaweb2
   with_items:
     - { src: /usr/share/icingaweb2/modules/monitoring, path: /etc/icingaweb2/enabledModules/monitoring }
-  when: (icingaweb_users.stdout == "") or icinga2_web2_setup_reinstate
+  when: icingaweb_user_does_not_exist or icinga2_web2_setup_reinstate
 
 - name: Configure Icinga Web 2
   become: yes
@@ -39,4 +39,4 @@
     - modules/monitoring/commandtransports.ini
     - modules/monitoring/config.ini
   notify: restart icinga2
-  when: (icingaweb_users.stdout == "") or icinga2_web2_setup_reinstate
+  when: icingaweb_user_does_not_exist or icinga2_web2_setup_reinstate

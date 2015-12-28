@@ -1,0 +1,14 @@
+---
+- include_vars: "{{ icinga2_ido_backend }}-web2-backend.yml"
+
+- name: Install packages for Web2 on RedHat OS family
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: icinga2_web2_yum_packages
+
+- include: mysql/install_web2.yml
+  when: icinga2_web2_backend == 'mysql'
+  
+- include: pgsql/install_web2.yml
+  when: icinga2_web2_backend == 'pgsql'

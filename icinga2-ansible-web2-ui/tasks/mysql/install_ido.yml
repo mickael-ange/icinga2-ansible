@@ -1,0 +1,40 @@
+---
+# --------- Icinga2 IDO DB - MYSQL
+
+- name: MYSQL | Create a Database for Icinga2
+  mysql_db:
+    name: "{{ item.name }}"
+    login_user: "{{ icinga2_ido_db_admin_user }}"
+    login_password: "{{ icinga2_ido_db_admin_pass }}"
+    login_host: "{{ icinga2_ido_db_host }}"
+    login_port: "{{ icinga2_ido_db_port }}"
+    state: present
+  register: icinga_ido_db
+  with_items:
+    - { name: "{{ icinga2_ido_db }}" }
+
+- name: MYSQL | Import the IDO Schema on Icinga Web Database - RH6 (only once)
+  mysql_db:
+    name: "{{ item.name }}"
+    login_user: "{{ icinga2_ido_db_admin_user }}"
+    login_password: "{{ icinga2_ido_db_admin_pass }}"
+    login_host: "{{ icinga2_ido_db_host }}"
+    login_port: "{{ icinga2_ido_db_port }}"
+    state: import
+    target: "{{ icinga2_ido_schema }}"
+  with_items:
+    - { name: "{{ icinga2_ido_db }}" }
+  when: icinga_ido_db.changed
+
+- name: MYSQL | Create Icinga User and configure Grants
+  mysql_user:
+    name: "{{ item.name }}"
+    password: "{{ icinga2_ido_db_pass }}"
+    login_user: "{{ icinga2_ido_db_admin_user }}"
+    login_password: "{{ icinga2_ido_db_admin_pass }}"
+    login_host: "{{ icinga2_ido_db_host }}"
+    login_port: "{{ icinga2_ido_db_port }}"
+    state: present
+    priv: "{{ item.db }}.*:{{ item.privs }}"
+  with_items:
+    - { db: "{{ icinga2_ido_db }}", name: "{{ icinga2_ido_db_user }}", privs: "{{ icinga2_ido_db_user_table_privileges }}" }

@@ -1,0 +1,15 @@
+---
+icinga2_ido_backend: pgsql
+# admin user to create databases
+icinga2_ido_db_admin_user: postgres
+icinga2_ido_db_admin_pass: postgres
+icinga2_ido_db_port: 5432
+# DB's Authorization (see pg_hba.conf.j2)
+pgsql_authorizations: 
+    # Assuming IDO backends are pgsql and not external for icinga and icingaweb2 DBs with same admin user's creds
+  - { type: host, database: all, user: "{{ icinga2_ido_db_admin_user }}", address: 127.0.0.1/32, method: trust }
+  - { type: host, database: all, user: "{{ icinga2_ido_db_admin_user }}", address: '::1/128', method: trust }
+  - { type: host, database: "{{ icinga2_ido_db }}", user: "{{ icinga2_ido_db_user }}", address: 127.0.0.1/32, method: md5 }
+  - { type: host, database: "{{ icinga2_ido_db }}", user: "{{ icinga2_ido_db_user }}", address: '::1/128', method: md5 }
+  - { type: host, database: "{{ icinga2_web2_db }}", user: "{{ icinga2_web2_db_user }}", address: 127.0.0.1/32, method: md5 }
+  - { type: host, database: "{{ icinga2_web2_db }}", user: "{{ icinga2_web2_db_user }}", address: '::1/128', method: md5 }

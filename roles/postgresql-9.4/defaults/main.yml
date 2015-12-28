@@ -1,0 +1,3 @@
+---
+# Postgres
+postgres_home: /usr/pgsql-9.4

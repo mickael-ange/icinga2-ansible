@@ -1,0 +1,9 @@
+---
+icinga2_ido_yum_packages:
+  - MySQL-python
+  - icinga2-ido-mysql 
+
+icinga2_ido_db_user_table_privileges: GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE
+
+icinga2_ido_schema: /usr/share/icinga2-ido-mysql/schema/mysql.sql
+icinga2_ido_feature_conf: /etc/icinga2/features-available/ido-mysql.conf

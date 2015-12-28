@@ -1,0 +1,6 @@
+---
+dependencies:
+  - { role: extra-path,
+        extra_path: "{{ postgres_home }}/bin",
+        extra_path_user: "{{ ansible_ssh_user }}" }
+

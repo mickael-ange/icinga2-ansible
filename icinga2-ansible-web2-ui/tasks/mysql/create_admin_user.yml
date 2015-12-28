@@ -1,5 +1,5 @@
 ---
-- name: Get admin user from icingaweb2 DB
+- name: MYSQL | Get admin user from icingaweb2 DB
   command: > 
     mysql -h {{ icinga2_web2_db_host }}
       -P {{ icinga2_web2_db_port }}
@@ -12,14 +12,14 @@
   changed_when: False
   register: icingaweb_admin
 
-- name: Copy create-admin.sql script
+- name: MYSQL | Copy create-admin.sql script
   template:
-    src: create-admin.sql.j2
+    src: ../../templates/create-admin.sql.j2
     dest: /tmp/create-admin.sql
   register: create_admin_sql
   when: icingaweb_admin.stdout == ""
 
-- name: Create Icinga admin user
+- name: MYSQL | Create Icinga admin user
   mysql_db:
     name: "{{ icinga2_web2_db }}"
     login_user: "{{ icinga2_web2_db_user }}"

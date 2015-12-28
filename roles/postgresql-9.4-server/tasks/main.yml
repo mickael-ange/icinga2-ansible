@@ -1,0 +1,55 @@
+---
+- name: Install PostgreSQL Server
+  become: yes
+  yum:
+    name: postgresql94-server
+    state: present
+
+- name: Init PostgreSQL DB
+  become: yes
+  shell: /usr/pgsql-9.4/bin/postgresql94-setup initdb
+  args:
+    creates: /var/lib/pgsql/9.4/initdb.log
+
+- name: Enable PostgreSQL Server
+  become: yes
+  service:
+    name: postgresql-9.4
+    state: started
+    enabled: yes
+
+- name: Allow remote connection
+  become: yes
+  template:
+    src: pg_hba.conf.j2
+    dest: /var/lib/pgsql/9.4/data/pg_hba.conf
+    backup: yes
+    owner: postgres
+    group: postgres
+    mode: 0600
+  register: pg_hba_conf
+
+- name: Set listen addresses
+  become: yes
+  lineinfile:
+    dest: /var/lib/pgsql/9.4/data/postgresql.conf
+    state: present
+    backup: yes
+    insertafter: "^#listen_addresses"
+    line: "listen_addresses = '{{ pgsql_db_listen_addresses }}'"
+  register: postgresql_conf
+
+- name: Open PostgreSQL Server Port
+  become: yes
+  firewalld:
+    port: "{{ pgsql_db_port }}/tcp"
+    permanent: true
+    immediate: yes
+    state: enabled
+
+- name: restart postgresql
+  become: yes
+  service:
+    name: postgresql-9.4
+    state: restarted
+  when: pg_hba_conf.changed or postgresql_conf.changed

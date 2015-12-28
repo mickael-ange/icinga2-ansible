@@ -1,14 +1,6 @@
 ---
-- name: Get user from icingaweb2 DB
-  command: > 
-    mysql -h {{ icinga2_web2_db_host }}
-      -P {{ icinga2_web2_db_port }}
-      -u{{ icinga2_web2_db_user }}
-      -p{{ icinga2_web2_db_pass }}
-      {{ icinga2_web2_db }}
-      --execute="SELECT * FROM icingaweb_user"
-      --batch --skip-column-names
-  no_log: True
-  changed_when: False
-  register:  icingaweb_users
+- include: mysql/get_icingaweb_user.yml
   when: icinga2_web2_backend == 'mysql'
+
+- include: pgsql/get_icingaweb_user.yml
+  when: icinga2_web2_backend == 'pgsql'

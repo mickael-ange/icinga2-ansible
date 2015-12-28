@@ -1,0 +1,74 @@
+---
+# /var/lib/pgsql/9.4/data/pg_hba.conf
+#host    icinga      icinga      172.16.8.0/24           md5
+#host    icinga      icinga      127.0.0.1/32            md5
+#host    icinga      icinga      ::1/128                 md5
+#host    icinga      postgres    172.16.8.0/24           trust
+
+# --------- Icinga2 IDO DB - PGSQL
+
+- name: PGSQL | Create a Database for Icinga2
+  postgresql_db:
+    name: "{{ item.name }}"
+    login_host: "{{ icinga2_ido_db_host }}"
+    port: "{{ icinga2_ido_db_port }}"
+    login_user: "{{ icinga2_ido_db_admin_user }}"
+    login_password: "{{ icinga2_ido_db_admin_pass }}"
+    encoding: 'UTF-8'
+    state: present
+  register: icinga_ido_db
+  with_items:
+    - { name: "{{ icinga2_ido_db }}" }
+
+- name: PGSQL | Import the IDO Schema on Icinga Web Database
+  environment:
+    PGPASSWORD: "{{ icinga2_ido_db_admin_pass }}"
+  shell: psql -h "{{ icinga2_ido_db_host }}" -d "{{ item.name }}" -U "{{ icinga2_ido_db_admin_user }}" < "{{ icinga2_ido_schema }}"
+  with_items:
+    - { name: "{{ icinga2_ido_db }}" }
+  when: icinga_ido_db.changed
+
+- name: PGSQL | Create Icinga Database User and configure Grants
+  postgresql_user:
+    name: "{{ item.name }}"
+    password: "{{ icinga2_ido_db_pass }}"
+    expires: "{{ icinga2_ido_db_pass_expires }}"
+    db: "{{ item.db }}"
+    login_host: "{{ icinga2_ido_db_host }}"
+    port: "{{ icinga2_ido_db_port }}"
+    login_user: "{{ icinga2_ido_db_admin_user }}"
+    login_password: "{{ icinga2_ido_db_admin_pass }}"
+    state: present
+  with_items:
+    - { db: "{{ icinga2_ido_db }}", name: "{{ icinga2_ido_db_user }}" }
+
+- name: PGSQL | Set icinga user's TABLE privileges
+  postgresql_privs:
+    database: "{{ item.database }}"
+    login_host: "{{ icinga2_ido_db_host }}"
+    port: "{{ icinga2_ido_db_port }}"
+    login_user: "{{ icinga2_ido_db_admin_user }}"
+    login_password: "{{ icinga2_ido_db_admin_pass }}"
+    privs: "{{ item.privs }}"
+    roles: "{{ item.roles }}"
+    type: table
+    objs: ALL_IN_SCHEMA
+    state: present
+  with_items:
+    - { database: "{{ icinga2_ido_db }}", roles: "{{ icinga2_ido_db_user }}", privs: "{{ icinga2_ido_db_user_table_privileges }}" }
+
+- name: PGSQL | Set icinga user's SEQUENCE privileges
+  postgresql_privs:
+    database: "{{ item.database }}"
+    login_host: "{{ icinga2_ido_db_host }}"
+    port: "{{ icinga2_ido_db_port }}"
+    login_user: "{{ icinga2_ido_db_admin_user }}"
+    login_password: "{{ icinga2_ido_db_admin_pass }}"
+    privs: "{{ item.privs }}"
+    roles: "{{ item.roles }}"
+    type: sequence
+    objs: ALL_IN_SCHEMA
+    state: present
+  with_items: 
+    - { database: "{{ icinga2_ido_db }}", roles: "{{ icinga2_ido_db_user }}", privs: "{{ icinga2_ido_db_user_sequence_privileges }}" }
+

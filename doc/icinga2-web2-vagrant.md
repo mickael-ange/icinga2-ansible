@@ -23,12 +23,14 @@ This command downloads roles into `librarian_roles/`. This directory has been ad
 
 ## Create and Provision a VM with Vagrant
 
-    vagrant provision icinga2-web2
+    vagrant provision icinga2-web2-mysql
+    vagrant provision icinga2-web2-postgres
 
 ## Enjoy Icinga2 Web2
 
-Username: icingaadmin
-Password: icingaadmin
+* Username: icingaadmin
+* Password: icingaadmin
 
-[http://monitoring/icingaweb2](http://172.16.1.2/icingaweb2)
+* [http://monitoring/icingaweb2-mysql](http://172.16.1.2/icingaweb2)
+* [http://monitoring/icingaweb2-postgres](http://172.16.1.3/icingaweb2)
 

@@ -1,8 +1,22 @@
 ---
-- name: "Make SElinux happy"
+- name: "Make SElinux happy with icingaweb2 config file"
   become: yes
   command: "{{ item }}"
   with_items:
     - semanage fcontext -a -t httpd_sys_rw_content_t "/etc/icingaweb2(/.*)?"
     - restorecon -Rv "/etc/icingaweb2"
   changed_when: False
+
+- name: "Make SElinux happy with the network"
+  become: yes
+  seboolean: 
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    persistent: "{{ item.persistent }}"
+  with_items:
+    # For remote access
+    - { name: httpd_can_network_connect, state: yes, persistent: yes }
+    # For local access
+    - { name: httpd_can_network_connect_db, state: yes, persistent: yes }
+  notify: restart icinga2
+
