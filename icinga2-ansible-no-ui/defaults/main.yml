@@ -26,8 +26,9 @@ icinga2_yum:
  - { package: "nagios-plugins-all" }
  - { package: "mailx" }
 
-icinga2_main_conf: "/etc/icinga2/icinga2.conf"
-icinga2_conf_d: "/etc/icinga2/conf.d"
+icinga2_conf_dir: /etc/icinga2
+icinga2_main_conf: "{{ icinga2_conf_dir }}/icinga2.conf"
+icinga2_conf_d: "{{ icinga2_conf_dir }}/conf.d"
 
 icinga2_conf_global: |
   include "constants.conf"
@@ -41,3 +42,23 @@ check_commands:
  check_nrpe: |
     "-H", "$address$",
         "-c", "$remote_nrpe_command$",
+
+# If icinga2_features is an empty array then icinga2 features are not managed by this role
+icinga2_features: []
+# If a feature is not list in the array then the feature is not managed by this role (e.g. ido-pgsql and ido-mysql features are actually managed by icinga2-ansible-web2-ui role)
+# Here are the original enabled features when Icinga2 is installed (ido-pgsql has been intentionally omitted)
+#icinga2_features:
+#  - { name: api, enabled: false }
+#  - { name: checker }
+#  - { name: command, enabled: false }
+#  - { name: compatlog, enabled: false }
+#  - { name: debuglog, enabled: false }
+#  - { name: graphite, enabled: false }
+#  - { name: icingastatus, enabled: false }
+#  - { name: livestatus, enabled: false }
+#  - { name: mainlog }
+#  - { name: notification }
+#  - { name: opentsdb, enabled: false }
+#  - { name: perfdata, enabled: false }
+#  - { name: statusdata, enabled: false }
+#  - { name: syslog, enabled: false }

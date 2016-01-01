@@ -1,0 +1,24 @@
+---
+- name: Enable Icinga2 features
+  file:
+    src: "../features-available/{{ item.name }}.conf"
+    dest: "{{ icinga2_conf_dir }}/features-enabled/{{ item.name }}.conf"
+    state: link
+  register: enable_features
+  with_items: icinga2_features
+  when: ( item.enabled is not defined or item.enabled )
+
+- name: Disable Icinga2 features
+  file:
+    path: "{{ icinga2_conf_dir }}/features-enabled/{{ item.name }}.conf"
+    state: absent
+  register: disable_features
+  with_items: icinga2_features
+  when: ( item.enabled is defined and not item.enabled )
+
+- name: Restart Icinga right after features config changed
+  become: yes
+  service:
+    name: icinga2
+    state: restarted
+  when: enable_features.changed or disable_features.changed
