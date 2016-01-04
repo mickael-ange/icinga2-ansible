@@ -13,6 +13,7 @@ icinga2_pkg:
  - { package: "icinga2" }
  - { package: "nagios-plugins" }
  - { package: "mailutils" }
+ - { package: "nagios-nrpe-plugin" }
 
 req_pkg:
  - { package: "gpg" }
@@ -25,18 +26,11 @@ icinga2_yum:
  - { package: "icinga2" }
  - { package: "nagios-plugins-all" }
  - { package: "mailx" }
+ - { package: "nagios-plugins-nrpe" }
 
 icinga2_conf_dir: /etc/icinga2
 icinga2_main_conf: "{{ icinga2_conf_dir }}/icinga2.conf"
 icinga2_conf_d: "{{ icinga2_conf_dir }}/conf.d"
-
-icinga2_conf_global: |
-  include "constants.conf"
-  include "zones.conf"
-  include <itl>
-  include <plugins>
-  include "features-enabled/*.conf"
-  include_recursive "conf.d"
 
 check_commands:
  check_nrpe: |

@@ -1,0 +1,20 @@
+---
+- name: Ensure NRPE daemon is enabled/disabled
+  become: yes
+  service:
+    name: "{{ nrpe_agent_service_name }}"
+    enabled: "{{ nrpe_agent_service_enabled }}"
+
+- name: Ensure NRPE daemon is in expected state
+  become: yes
+  service:
+    name: "{{ nrpe_agent_service_name }}"
+    state: "{{ nrpe_agent_service_state }}"
+
+  # Don't use notification, restart NRPE daemon right after the role's tasks are completed
+- name: Ensure NRPE daemon restarted
+  become: yes
+  service:
+    name: "{{ nrpe_agent_service_name }}"
+    state: restarted
+  when: nrpe_config.changed and nrpe_agent_service_state != 'stopped'

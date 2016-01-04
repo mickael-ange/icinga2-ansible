@@ -17,13 +17,6 @@ Example Playbook
   roles:
 
    - role: icinga2-ansible-no-ui
-     icinga2_conf_global: |
-       include "constants.conf"
-       include "zones.conf"
-       include <itl>
-       include <plugins>
-       include "features-enabled/*.conf"
-       include_recursive "conf.d"
      check_commands:
        check_nrpe: |
           "-H", "$address$",
@@ -34,7 +27,7 @@ Example Playbook
 Role Variables
 --------------
 
-See `defaults/main.yml`
+See [defaults/main.yml](defaults/main.yml)
 
 License
 -------

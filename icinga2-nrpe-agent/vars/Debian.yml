@@ -6,3 +6,5 @@ nrpe_agent_packages_to_install:
 
 nrpe_agent_user: nagios
 nrpe_agent_group: nagios
+
+nrpe_agent_service_name: nagios-nrpe-server

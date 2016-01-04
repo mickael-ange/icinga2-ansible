@@ -17,7 +17,14 @@
     group: root
     mode: 0644
     backup: yes
-  notify:
-   - restart nrpe
+  register: nrpe_config
   tags:
    - nrpe_agent_config
+
+- name: Open NRPE server port
+  become: yes
+  firewalld:
+    port: "{{ nrpe_agent_port }}/tcp"
+    permanent: true
+    immediate: yes
+    state: enabled

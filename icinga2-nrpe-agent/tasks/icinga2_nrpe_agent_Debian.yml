@@ -19,7 +19,6 @@
     group: root
     mode: 0644
     backup: yes
-  notify:
-   - restart nagios-nrpe-server
+  register: nrpe_config
   tags:
    - nrpe_agent_config

@@ -119,7 +119,8 @@ galaxy_info:
   #- packaging
   #- system
   #- web
-dependencies: []
+dependencies: 
+  - { role: firewalld, when: ansible_os_family == 'RedHat' }
   # List your role dependencies here, one per line. Only
   # dependencies available via galaxy should be listed here.
   # Be sure to remove the '[]' above if you add dependencies

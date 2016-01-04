@@ -2,13 +2,7 @@
 # handlers file for icinga2-nrpe-agent
 
 - name: restart nrpe
+  become: yes
   service:
-    name: nrpe
+    name: "{{ nrpe_agent_service_name }}" 
     state: restarted 
-    enabled: yes
-
-- name: restart nagios-nrpe-server
-  service:
-    name: nagios-nrpe-server
-    state: restarted 
-    enabled: yes
