@@ -18,6 +18,11 @@
     group: root
     mode: 0644
     backup: yes
-  register: nrpe_config
+  register: nrpe_conf
   tags:
    - nrpe_agent_config
+
+  # To avoid getting register variable override by skipped task (of other os family)
+- set_fact:
+    nrpe_config_changed: yes
+  when: nrpe_conf.changed

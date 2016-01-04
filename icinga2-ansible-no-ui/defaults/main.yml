@@ -1,5 +1,7 @@
 ---
 # defaults file for icinga2-ansible-no-ui
+icinga2_user: icinga
+icinga2_group: icinga
 
 icinga2_key: "http://packages.icinga.org/icinga.key"
 icinga2_debmon_key: "http://debmon.org/debmon/repo.key"

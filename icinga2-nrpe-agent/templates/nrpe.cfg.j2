@@ -215,7 +215,7 @@ connection_timeout=300
 # command[check_zombie_procs]=/usr/lib64/nagios/plugins/check_procs -w 5 -c 10 -s Z
 # command[check_total_procs]=/usr/lib64/nagios/plugins/check_procs -w 150 -c 200 
 
-{% for check_cmd in nrpe_check_commands %}
+{% for check_cmd in nrpe_agent_check_commands %}
 command[{{ check_cmd.name }}]={{ check_cmd.command }}
 {% endfor %}
 

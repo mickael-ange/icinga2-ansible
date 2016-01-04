@@ -16,10 +16,23 @@ nrpe_agent_service_enabled: yes
 
 nrpe_agent_nagios_plugins_path: /usr/lib/nagios/plugins
 
-# Default NRPE check commands
-nrpe_check_commands:
+nrpe_agent_check_commands:
+  # Default NRPE check commands
   - { name: check_users, command: "{{ nrpe_agent_nagios_plugins_path }}/check_users -w 5 -c 10" }
   - { name: check_load, command: "{{ nrpe_agent_nagios_plugins_path }}/check_load -w 15,10,5 -c 30,25,20" }
   - { name: check_hda1, command: "{{ nrpe_agent_nagios_plugins_path }}/check_disk -w 20% -c 10% -p /dev/hda1" }
   - { name: check_zombie_procs, command: "{{ nrpe_agent_nagios_plugins_path }}/check_procs -w 5 -c 10 -s Z" }
-  - { name: check_total_procs, command: "{{ nrpe_agent_nagios_plugins_path }}/check_procs -w 150 -c 200" } 
+  - { name: check_total_procs, command: "{{ nrpe_agent_nagios_plugins_path }}/check_procs -w 150 -c 200" }
+  # Extra NRPE check commands 
+  - { name: check_cpu, command: "{{ nrpe_agent_nagios_plugins_path }}/check_cpu" }
+  - { name: check_mem, command: "{{ nrpe_agent_nagios_plugins_path }}/check_mem -w 80 -c 90 -W 65 -C 80" }
+  - { name: check_uptime, command: "{{ nrpe_agent_nagios_plugins_path }}/check_uptime" }
+
+# Extra plugins to install, file name in files/
+nrpe_agent_extra_nagios_plugins:
+  # https://exchange.nagios.org/directory/Plugins/System-Metrics/CPU-Usage-and-Load/check_cpu-2Esh/details
+  - check_cpu
+  # https://exchange.nagios.org/directory/Plugins/System-Metrics/Memory/check_mem-2Esh/details
+  - check_mem
+  # https://exchange.nagios.org/directory/Plugins/System-Metrics/Uptime/check_uptime3/details with a personal update made a while ago
+  - check_uptime

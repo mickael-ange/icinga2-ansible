@@ -41,7 +41,7 @@ See variables:
 ```yaml
 ---
 # Default NRPE check commands
-nrpe_check_commands:
+nrpe_agent_check_commands:
   - { name: check_users, command: "{{ nrpe_agent_nagios_plugins_path }}/check_users -w 5 -c 10" }
   - { name: check_load, command: "{{ nrpe_agent_nagios_plugins_path }}/check_load -w 15,10,5 -c 30,25,20" }
   - { name: check_hda1, command: "{{ nrpe_agent_nagios_plugins_path }}/check_disk -w 20% -c 10% -p /dev/hda1" }

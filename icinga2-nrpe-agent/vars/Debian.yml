@@ -3,6 +3,8 @@ nrpe_agent_packages_to_install:
   - nagios-nrpe-server
   - nagios-nrpe-plugin
   - nagios-plugins
+  # sysstat for check_cpu plugin
+  - sysstat
 
 nrpe_agent_user: nagios
 nrpe_agent_group: nagios

@@ -17,4 +17,4 @@
   service:
     name: "{{ nrpe_agent_service_name }}"
     state: restarted
-  when: nrpe_config.changed and nrpe_agent_service_state != 'stopped'
+  when: nrpe_config_changed and (nrpe_agent_service_state != 'stopped')

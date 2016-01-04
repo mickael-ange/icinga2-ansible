@@ -1,2 +1,3 @@
 ---
 # vars file for icinga2-nrpe-agent
+nrpe_config_changed: no

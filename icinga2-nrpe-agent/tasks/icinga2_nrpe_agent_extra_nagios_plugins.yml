@@ -1,0 +1,10 @@
+---
+- name: Provision extra Nagios plugins
+  become: yes
+  copy:
+    src: "{{ item }}"
+    dest: "{{ nrpe_agent_nagios_plugins_path }}/{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+  with_items: nrpe_agent_extra_nagios_plugins

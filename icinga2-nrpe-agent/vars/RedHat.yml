@@ -2,6 +2,8 @@
 nrpe_agent_packages_to_install:
   - nrpe
   - nagios-plugins-all
+  # sysstat for check_cpu plugin
+  - sysstat
 
 nrpe_agent_user: nrpe
 nrpe_agent_group: nrpe
