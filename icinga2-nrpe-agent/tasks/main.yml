@@ -1,6 +1,8 @@
 ---
 # tasks file for icinga2-nrpe-agent
 
+- include_vars: "{{ ansible_os_family }}.yml"
+
 - include: icinga2_nrpe_agent_RedHat.yml
   when: ansible_os_family == 'RedHat' and 'monitoring_servers' not in group_names
   # NRPE Agent will be installed on clients only

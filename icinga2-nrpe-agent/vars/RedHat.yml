@@ -1,0 +1,10 @@
+---
+nrpe_agent_packages_to_install:
+  - nrpe
+  - nagios-plugins-all
+
+nrpe_agent_user: nrpe
+nrpe_agent_group: nrpe
+
+# Plugins path for RH and other x86_64
+nrpe_agent_nagios_plugins_path: /usr/lib64/nagios/plugins

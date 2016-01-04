@@ -1,18 +1,22 @@
 ---
-- name: Install Nrpe and Plugins
-  yum: name={{ item.package }} 
-       state=latest
-  with_items: nrpe_agent_{{ ansible_os_family }}
+- name: Install NRPE and Nagios plugins
+  become: yes
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: nrpe_agent_packages_to_install
   tags:
    - nrpe_agent_install
 
-- name: Copy Nrpe Configuration
-  template: src=nrpe.cfg.j2
-            dest={{ nrpe_agent_config }}
-            owner=root
-            group=root
-            mode=0644
-            backup=yes
+- name: Configure NRPE agent
+  become: yes
+  template:
+    src: nrpe.cfg.j2
+    dest: "{{ nrpe_agent_config }}"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
   notify:
    - restart nrpe
   tags:
