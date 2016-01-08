@@ -3,6 +3,9 @@
 
 # If BD backend server is external (true), no DB server will be installed
 icinga2_ido_backend_external: false
+# icinga2_ido_backend_flavour: server | RDS
+# There are permission restrictions for AWS PostgreSQL RDS instance
+icinga2_ido_backend_flavour: server
 # Defaults to: mysql
 # icinga2_ido_backend: mysql|pgsql
 icinga2_ido_backend: mysql
@@ -27,6 +30,9 @@ icinga2_web2_setup_reinstate: false
 
 # If BD backend server is external (true), no DB server will be installed
 icinga2_web2_backend_external: false
+# icinga2_ido_backend_flavour: server | RDS
+# There are permission restrictions for AWS PostgreSQL RDS instance
+icinga2_web2_backend_flavour: server
 # Defaults to: "{{ icinga2_ido_backend }}"
 # icinga2_ido_backend: mysql|pgsql
 icinga2_web2_backend: "{{ icinga2_ido_backend }}"

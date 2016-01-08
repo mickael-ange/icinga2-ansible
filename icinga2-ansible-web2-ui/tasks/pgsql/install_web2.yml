@@ -28,7 +28,13 @@
     - { name: "{{ icinga2_web2_db }}" }
   when: icinga_web2_db.changed
 
-- name: PGSQL | Create Icingaweb2 Database User and configure Grants
+# Check if icinga_web2_db.changed and icinga2_web2_backend_flavour == 'RDS'
+# This is a workaround for PostgreSQL RDS database (AWS) because we get:
+#   "psycopg2.ProgrammingError: permission denied for relation pg_authid
+# when user already exists in the DB due to missing permission for master user created with RDS.
+# See https://github.com/ansible/ansible-modules-core/issues/297)
+# Consequently we cannot update the user we create using this task for RDS Database. 
+- name: PGSQL | Create Icingaweb2 Database User
   postgresql_user:
     name: "{{ item.name }}"
     password: "{{ icinga2_web2_db_pass }}"
@@ -41,6 +47,8 @@
     state: present
   with_items:
     - { db: "{{ icinga2_web2_db }}", name: "{{ icinga2_web2_db_user }}" }
+  when: icinga2_web2_backend_flavour == 'server' or
+        (icinga_web2_db.changed and icinga2_web2_backend_flavour == 'RDS')
 
 - name: PGSQL | Set icingaweb2 user's TABLE privileges
   postgresql_privs:
