@@ -96,7 +96,7 @@ allowed_hosts={{ nrpe_agent_allowed_hosts | join(",") }}
 #
 # Values: 0=do not allow arguments, 1=allow command arguments
 
-dont_blame_nrpe=0
+dont_blame_nrpe={{ nrpe_agent_dont_blame_nrpe }}
 
 
 
@@ -144,7 +144,7 @@ allow_bash_command_substitution=0
 # syslog facility.
 # Values: 0=debugging off, 1=debugging on
 
-debug=0
+debug={{ nrpe_agent_debug }}
 
 
 

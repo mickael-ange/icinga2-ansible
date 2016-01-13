@@ -3,17 +3,56 @@
 
 nrpe_agent_config: /etc/nagios/nrpe.cfg
 
+# PORT NUMBER
+# Port number we should wait for connections on.
+# NOTE: This must be a non-priviledged port (i.e. > 1024).
+# NOTE: This option is ignored if NRPE is running under either inetd or xinetd
+
+nrpe_agent_port: 5666
+
+
+# ALLOWED HOST ADDRESSES
+# This is an optional comma-delimited list of IP address or hostnames 
+# that are allowed to talk to the NRPE daemon. Network addresses with a bit mask
+# (i.e. 192.168.1.0/24) are also supported. Hostname wildcards are not currently 
+# supported.
+#
+# Note: The daemon only does rudimentary checking of the client's IP
+# address.  I would highly recommend adding entries in your /etc/hosts.allow
+# file to allow only the specified host to connect to the port
+# you are running this daemon on.
+#
+# NOTE: This option is ignored if NRPE is running under either inetd or xinetd
+#
 # A list of allowed hosts for Nrpe agent
+
 nrpe_agent_allowed_hosts: 
   - 127.0.0.1
 
-nrpe_agent_port: 5666
+
+# *** ENABLING THIS OPTION IS A SECURITY RISK! *** 
+# Read the SECURITY file for information on some of the security implications
+# of enabling this variable.
+#
+# Values: 0=do not allow arguments, 1=allow command arguments
+
+nrpe_agent_dont_blame_nrpe: 0
+
+
+# DEBUGGING OPTION
+# This option determines whether or not debugging messages are logged to the
+# syslog facility.
+# Values: 0=debugging off, 1=debugging on
+
+nrpe_agent_debug: 0
+
 
 # Possible value: started | stopped | restarted
 # Defauts to started
 nrpe_agent_service_state: started
 nrpe_agent_service_enabled: yes
 
+# Default path to Nagios plugins: this value is override in vars/{{ ansible_os_family }}.yml
 nrpe_agent_nagios_plugins_path: /usr/lib/nagios/plugins
 
 nrpe_agent_check_commands:
@@ -30,7 +69,8 @@ nrpe_agent_check_commands:
   - { name: check_disk, command: "{{ nrpe_agent_nagios_plugins_path }}/check_disk -w 10% -c 5% -A --ignore-ereg-path '^/sys/.*$'" }
   - { name: check_swap, command: "{{ nrpe_agent_nagios_plugins_path }}/check_swap -a -w 30% -c 10%" }
   - { name: check_load_per_cpu, command: "{{ nrpe_agent_nagios_plugins_path }}/check_load -r -w 4,2,1 -c 10,5,2" }
-# Extra plugins to install, file name in files/
+
+# Extra plugins to install, list of files' name that are located in files/
 nrpe_agent_extra_nagios_plugins:
   # https://exchange.nagios.org/directory/Plugins/System-Metrics/CPU-Usage-and-Load/check_cpu-2Esh/details
   - check_cpu
