@@ -1,0 +1,150 @@
+#!/bin/bash
+
+SCRIPT_VERSION=1.0
+MAINTAINER_NAME="Mickael Ange"
+MAINTAINER_EMAIL_ADDRESS=akiran28@hotmail.com
+
+SCRIPT_HOSTNAME=$(hostname)
+SCRIPT_DIR=$(pwd)
+WHOAREU=$(whoami)
+SCRIPT_NAME=$0
+PARAM=$@
+
+VERSION_TO_DISPLAY="Script Version: $SCRIPT_VERSION\nMaintainer: $MAINTAINER_NAME <$MAINTAINER_EMAIL_ADDRESS>"
+
+GET_VERSION=false
+RUNNING_STATUS="active"
+STOPPED_STATUS="inactive"
+FAILED_STATUS="failed"
+DEFAULT_EXPECTED_STATUS=$RUNNING_STATUS
+
+# Nagios Exit Codes
+EXIT_OK=0
+EXIT_WARNING=1
+EXIT_CRITICAL=2
+EXIT_UNKNOWN=3
+
+f_display_usage() {
+    cat << EOF
+    Check service status with systemctl.
+    USAGE: $0 -s <service_name> [OPTIONS]
+    OPTIONS:
+        -e | --expected-status
+            The expected service status: $RUNNING_STATUS | $STOPPED_STATUS.
+            Defaults: $DEFAULT_EXPECTED_STATUS
+
+        -h | --help
+            Display this help.
+
+        -s | --service
+            The name of the service to check, e.g. nginx or nginx.service.
+
+        -v | --version
+            Display script version.        
+EOF
+}
+
+f_log() {
+    msg="$1"
+    level=$2
+    msg_to_log_in_console="$level - $msg"
+    echo -e "$msg_to_log_in_console"
+}
+
+f_log_unknown() {
+    f_log "$1" "UNKNOWN"
+    f_display_usage
+    exit $EXIT_UNKNOWN 
+}
+
+f_log_ok() {
+    f_log "$1" "OK"
+    exit $EXIT_OK
+}
+
+f_log_warning() {
+    f_log "$1" "WARNING"
+    exit $EXIT_WARNING
+}
+
+f_log_critical() {
+    f_log "$1" "CRITICAL"
+    exit $EXIT_CRITICAL
+}
+
+
+f_parse_parameters() {
+# Define long options
+    long_opts="expected-status:,help,service:,version"
+    
+    # read the options
+    params=`getopt -o e:hs:v --long $long_opts -n $SCRIPT_NAME -- $PARAM`
+    eval set -- "$params"
+    
+    while true ; do
+        case "$1" in
+            -e|--expected-status)
+                EXPECTED_STATUS="$2" 
+                shift
+        ;;
+            -h|--help)
+                f_log_unknown "Display help"
+        ;;
+            -s|--service)
+                SERVICE_NAME="$2"
+                shift
+        ;;
+            -v|--version)   # Get the version of the script
+                GET_VERSION=true
+        ;;
+            --) break 
+        ;;
+                # Handle unknown option
+            *)  f_log_unknown "Unknown option: $1, exited.."
+        ;;
+        esac
+        shift
+    done
+        
+    # Validate parsed parameters
+    f_validate_parameters
+}
+
+f_diplay_script_version(){
+   f_log_unknown "$VERSION_TO_DISPLAY"
+}
+
+f_validate_parameters() {
+    # Display script version
+    if $GET_VERSION; then
+        f_diplay_script_version
+        exit $EXIT_UNKNOWN
+    fi
+
+    # Check service name
+    if [ -z "$SERVICE_NAME" ]; then
+        f_log_unknown "Service name is mandatory, you must provide one in command line with option -s or --service."
+    fi
+
+    if [ -z "$EXPECTED_STATUS" ]; then
+        EXPECTED_STATUS=$DEFAULT_EXPECTED_STATUS
+    fi
+    if [ "$EXPECTED_STATUS" != "$RUNNING_STATUS" ] && [ "$EXPECTED_STATUS" != "$STOPPED_STATUS" ]; then
+       f_log_unknown "Expected status -e should be \"$RUNNING_STATUS\" or \"$STOPPED_STATUS\" (actual: \"$EXPECTED_STATUS\")"
+    fi
+
+}
+f_check_service_status() {
+    SERVICE_STATUS=`systemctl is-active $SERVICE_NAME`
+    STATUS_MSG="Systemctl - Service \"$SERVICE_NAME\" is in state \"$SERVICE_STATUS\" (expected status is \"$EXPECTED_STATUS\")"
+    if [ "$SERVICE_STATUS" = "$EXPECTED_STATUS" ]; then
+        f_log_ok "$STATUS_MSG"
+    else
+        f_log_critical "$STATUS_MSG"
+    fi
+}
+
+f_parse_parameters
+
+f_check_service_status
+_

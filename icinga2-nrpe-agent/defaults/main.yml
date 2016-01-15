@@ -69,6 +69,8 @@ nrpe_agent_check_commands:
   - { name: check_disk, command: "{{ nrpe_agent_nagios_plugins_path }}/check_disk -w 10% -c 5% -A --ignore-ereg-path '^/sys/.*$'" }
   - { name: check_swap, command: "{{ nrpe_agent_nagios_plugins_path }}/check_swap -a -w 30% -c 10%" }
   - { name: check_load_per_cpu, command: "{{ nrpe_agent_nagios_plugins_path }}/check_load -r -w 4,2,1 -c 10,5,2" }
+# You need to set nrpe_agent_dont_blame_nrpe to 1 to enable NRPE arguments
+#  - { name: check_systemctl, command: "{{ nrpe_agent_nagios_plugins_path }}/check_systemctl -s $ARG1$ -e $ARG2$" }
 
 # Extra plugins to install, list of files' name that are located in files/
 nrpe_agent_extra_nagios_plugins:
@@ -78,3 +80,6 @@ nrpe_agent_extra_nagios_plugins:
   - check_mem
   # https://exchange.nagios.org/directory/Plugins/System-Metrics/Uptime/check_uptime3/details with a personal update made a while ago
   - check_uptime
+  # https://github.com/mickael-ange/nagios-plugins/blob/master/check_systemctl
+  - check_systemctl
+  
