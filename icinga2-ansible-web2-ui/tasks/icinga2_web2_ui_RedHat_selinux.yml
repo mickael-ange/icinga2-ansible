@@ -1,4 +1,13 @@
 ---
+- name: "Make SElinux happy with icinga2"
+  become: yes
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - icinga2-selinux
+  register: icinga2_selinux
+
 - name: "Make SElinux happy with icingaweb2 config file"
   become: yes
   command: "{{ item }}"
@@ -18,5 +27,11 @@
     - { name: httpd_can_network_connect, state: yes, persistent: yes }
     # For local access
     - { name: httpd_can_network_connect_db, state: yes, persistent: yes }
-  notify: restart icinga2
+  register: selinux_network
 
+- name: Restart Icinga2
+  become: yes
+  service: 
+    name: icinga2
+    state: restarted
+  when: icinga2_selinux.changed or selinux_network.changed
