@@ -5,6 +5,7 @@
    - role: epel-release
    - role: selinux
    - role: firewalld
+   - role: swap
      # See host_vars/icinga2-web2-postgres.yml for postgresql-9.4-server config
    - role: postgresql-9.4-server
    - { role: php, become: yes }

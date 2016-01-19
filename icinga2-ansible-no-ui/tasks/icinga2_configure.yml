@@ -1,20 +1,42 @@
 ---
 - name: Copy Main Icinga2 Configuration
-  template: src=icinga2.conf.j2
-            dest={{ icinga2_main_conf }}
-            backup=yes
-            owner=root
-            group=root
-            mode=0644
-  notify: 
-   - restart icinga2
+  template:
+    src: icinga2.conf.j2
+    dest: "{{ icinga2_main_conf }}"
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+  register: main_config
 
 - name: Copy Check Commands Configuration
-  template: src=icinga2_check_commands.j2
-            dest={{ icinga2_conf_d }}/check_commands.conf
-            backup=yes
-            owner=root
-            group=root
-            mode=0644
-  notify: 
-   - restart icinga2
+  template:
+    src: icinga2_check_commands.j2
+    dest: "{{ icinga2_conf_d }}/check_commands.conf"
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+  register: check_commands_config
+
+- name: Override icinga2's default configuration
+  become: yes
+  template:
+    src: "defaults/{{ item }}.j2"
+    dest: "{{ icinga2_conf_d }}/{{ item }}"
+    owner: "{{ icinga2_user }}"
+    group: "{{ icinga2_group }}"
+    mode: 0664
+  with_items:
+    - hosts.conf
+    - users.conf
+  register: icinga2_defaults_config
+
+- name: Restart icinga2
+  become: yes
+  service:
+    name: icinga2
+    state: restarted
+  when: main_config.changed or
+        check_commands_config.changed or
+        icinga2_defaults_config.changed

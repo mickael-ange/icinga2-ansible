@@ -1,0 +1,4 @@
+---
+# Size in MB
+swap_size: 1000
+swap_file: /swapfile

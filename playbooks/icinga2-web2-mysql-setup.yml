@@ -5,6 +5,7 @@
    - role: epel-release
    - role: selinux
    - role: firewalld
+   - role: swap
    - role: mariadb-server
    - { role: php, become: yes }
    - { role: icinga2-ansible-no-ui, become: yes, tags: icinga2-no-ui }

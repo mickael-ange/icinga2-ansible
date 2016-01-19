@@ -1,0 +1,3 @@
+---
+- include: create-swap-file.yml
+  when: ansible_swaptotal_mb < 1

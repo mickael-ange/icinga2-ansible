@@ -6,7 +6,7 @@ Ansible role to install Icinga2 Web2 Ui
 Requirements
 ------------
 
-Mysql or MariaDB - Httpd or Nginx - PHP
+Mysql or MariaDB or PostgreSQL - Httpd or Nginx - PHP
 
 Dependencies
 ------------
@@ -25,21 +25,10 @@ Example Playbook
      become: yes
    - role: icinga2-ansible-no-ui
      become: yes
-     icinga2_conf_global: |
-       include "constants.conf"
-       include "zones.conf"
-       include <itl>
-       include <plugins>
-       include "features-enabled/*.conf"
-       include_recursive "conf.d"
-     check_commands:
-       check_nrpe: |
-          "-H", "$address$",
-              "-c", "$remote_nrpe_command$",
      tags: icinga2-no-ui
-   -  role: icinga2-ansible-web2-ui
-      become: yes
-      tags: icinga2-ansible-web2-ui
+   - role: icinga2-ansible-web2-ui
+     become: yes
+     tags: icinga2-ansible-web2-ui
 
 ```
 
@@ -48,7 +37,11 @@ Then Go to http://IP/icingaweb2 and use icingaadmin/icingaadmin to login.
 Role Variables
 --------------
 
-See `defaults/main.yml`
+See [defaults/main.yml](defaults/main.yml).
+See [vars/mysql-ido-backend.yml](vars/mysql-ido-backend.yml) for MySQL IDO backend variables.
+See [vars/mysql-web2-backend.yml](vars/mysql-web2-backend.yml) for MySQL Web2 backend variables.
+See [vars/pqsql-ido-backend.yml](vars/pqsql-ido-backend.yml) for PgSQL IDO backend variables.
+See [vars/pqsql-web2-backend.yml](vars/pqsql-web2-backend.yml) for PgSQL Web2 backend variables.
 
 License
 -------
@@ -60,3 +53,7 @@ Author Information
 
 Valentino Gagliardi - Icinga Dev Team
 
+Contributors Information
+------------------------
+
+* Mickael Ange <akiran28@hotmail.com>

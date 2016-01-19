@@ -58,3 +58,5 @@ icinga2_features: []
 #  - { name: perfdata, enabled: false }
 #  - { name: statusdata, enabled: false }
 #  - { name: syslog, enabled: false }
+
+icinga2_user_icingaadmin_email: icinga@localhost

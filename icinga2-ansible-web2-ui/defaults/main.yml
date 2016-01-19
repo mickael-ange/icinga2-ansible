@@ -1,6 +1,8 @@
 ---
 # defaults file for icinga2-ansible-web2-ui
 
+### IDO Backend
+
 # If BD backend server is external (true), no DB server will be installed
 icinga2_ido_backend_external: false
 # icinga2_ido_backend_flavour: server | RDS
@@ -21,6 +23,8 @@ icinga2_ido_db_pass: icinga
 # Password expire date (For pgsql)
 icinga2_ido_db_pass_expires: infinity
 enablerepo: "base"
+
+### Web2 Backend
 
 # Set icinga2_web2_setup_with_wizard to true if you want to use icingaweb2 wizard to configure your server.
 # When icinga2_web2_setup_with_wizard is set to false, icingaweb2 is configured automatically and creates an admin user (icinga2_web2_admin_username)

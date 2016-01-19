@@ -38,3 +38,8 @@ Author Information
 ------------------
 
 Valentino Gagliardi - Icinga Dev Team
+
+Contributors Information
+------------------------
+
+* Mickael Ange <akiran28@hotmail.com>
