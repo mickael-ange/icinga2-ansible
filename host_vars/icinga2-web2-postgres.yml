@@ -9,7 +9,26 @@ pgsql_authorizations:
     # Assuming IDO backends are pgsql and not external for icinga and icingaweb2 DBs with same admin user's creds
   - { type: host, database: all, user: "{{ icinga2_ido_db_admin_user }}", address: 127.0.0.1/32, method: trust }
   - { type: host, database: all, user: "{{ icinga2_ido_db_admin_user }}", address: '::1/128', method: trust }
+  - { type: host, database: all, user: "{{ icinga2_ido_db_admin_user }}", address: 172.16.1.1/32, method: trust }
   - { type: host, database: "{{ icinga2_ido_db }}", user: "{{ icinga2_ido_db_user }}", address: 127.0.0.1/32, method: md5 }
   - { type: host, database: "{{ icinga2_ido_db }}", user: "{{ icinga2_ido_db_user }}", address: '::1/128', method: md5 }
+  - { type: host, database: "{{ icinga2_ido_db }}", user: "{{ icinga2_ido_db_user }}", address: 172.16.1.1/32, method: md5 }
   - { type: host, database: "{{ icinga2_web2_db }}", user: "{{ icinga2_web2_db_user }}", address: 127.0.0.1/32, method: md5 }
   - { type: host, database: "{{ icinga2_web2_db }}", user: "{{ icinga2_web2_db_user }}", address: '::1/128', method: md5 }
+  - { type: host, database: "{{ icinga2_web2_db }}", user: "{{ icinga2_web2_db_user }}", address: 172.16.1.1/32, method: md5 }
+
+icinga2_features:
+  - { name: api, enabled: false }
+  - { name: checker }
+  - { name: command, enabled: true }
+  - { name: compatlog, enabled: false }
+  - { name: debuglog, enabled: true }
+  - { name: graphite, enabled: false }
+  - { name: icingastatus, enabled: false }
+  - { name: livestatus, enabled: false }
+  - { name: mainlog }
+  - { name: notification }
+  - { name: opentsdb, enabled: false }
+  - { name: perfdata, enabled: false }
+  - { name: statusdata, enabled: false }
+  - { name: syslog, enabled: false }
