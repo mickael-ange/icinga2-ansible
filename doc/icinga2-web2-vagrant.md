@@ -73,6 +73,9 @@ Enjoy Icinga2 Web2 with PosgreSQL as backend database
 ### Known Issues
 
 * [SELinux: notification scripts](#selinux-notification-scripts)
+
+### Fixed Issues
+
 * [IDO: No Historical Data in Icinga2 Web2 and DB](#ido-no-historical-data-in-icinga2-web2-and-db)
 
 ## SELinux: notification scripts
@@ -144,6 +147,28 @@ To reproduce the problems with `icinga2-web2-postgres` VM with SELinux in permis
     `sudo tail -f -n 20 /var/log/audit/audit.log /var/log/icinga2/debug.log`
   6. Login to Icinga web2 (Username: icingaadmin, Password: icingaadmin)
     [http://monitoring/icingaweb2-postgres](http://172.16.1.3/icingaweb2) 
+
+IDO PGSQL config: `/etc/icinga2/features-enabled/ido-pgsql.conf`
+
+    library "db_ido_pgsql"
+    
+    object IdoPgsqlConnection "ido-pgsql" {
+      user = "icinga"
+      password = "icinga"
+      host = "localhost"
+      database = "icinga"
+      table_prefix = "icinga_"
+      instance_name = "icinga2"
+      instance_description = "icinga2 instance"
+    
+      cleanup = {
+        downtimehistory_age = 48h
+        logentries_age = 31d
+      }
+    
+      categories = DbCatConfig | DbCatState
+    }
+
 
 ### Add Host Comment
 
@@ -238,5 +263,31 @@ To reproduce the problems with `icinga2-web2-postgres` VM with SELinux in permis
 
 I have same kind of problems with notifications.
 
-**Wondering**: Is there any IDO or Icinga2 configuration to get the database populate with Comments, Downtimes, etc..? 
+**Question**:
+
+Is there any IDO or Icinga2 configuration to get the database populate with Comments, Downtimes, etc..? 
+
+**Answer**: 
+
+As explained in the documentation:
+
+> categories Optional. The types of information that should be written to the database.
+
+So when I removed categories from my `ido-pgsql.conf` configuration. I restart Icinga2 then the data are written in the DB as expected. `Comments`, `Downtimes`, well everything I wanted is listed the UI now.
+
+I also removed the `cleanup` section as it is probably not what I want too.
+
+The final ido-pgsql.conf configuration:
+
+    library "db_ido_pgsql"
+    
+    object IdoPgsqlConnection "ido-pgsql" {
+      user = "icinga"
+      password = "icinga"
+      host = "localhost"
+      database = "icinga"
+      table_prefix = "icinga_"
+      instance_name = "icinga2"
+      instance_description = "icinga2 instance"
+    }
 
