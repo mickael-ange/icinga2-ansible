@@ -23,7 +23,7 @@ icinga2_ido_mysql_schema: "/usr/share/doc/icinga2-ido-mysql-{{ icinga2_ido_schem
 icinga2_web_mysql_schema_rh_7: "/usr/share/doc/icinga-web-1.11.1/schema/mysql.sql"
 icinga2_web_mysql_schema_rh_6: "/usr/share/doc/icinga-web-1.11.0/schema/mysql.sql"
 
-icinga2_ido_mysql_conf: "/etc/icinga2/features-available/ido-mysql.conf"
+icinga2_ido_mysql_conf: "{{ icinga2_conf_dir }}/features-available/ido-mysql.conf"
 
 icinga2_ido_mysql_conf_global:
  - { directive: 'user = "icinga"' }

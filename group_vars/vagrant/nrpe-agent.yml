@@ -1,0 +1,22 @@
+---
+### NRPE Agent
+nrpe_agent_dont_blame_nrpe: 1
+nrpe_agent_debug: 1
+nrpe_agent_allowed_hosts: 
+  - 127.0.0.1
+
+nrpe_agent_check_commands:
+  # Default NRPE check commands
+  - { name: check_users, command: "{{ nrpe_agent_nagios_plugins_path }}/check_users -w 5 -c 10" }
+  - { name: check_load, command: "{{ nrpe_agent_nagios_plugins_path }}/check_load -w 15,10,5 -c 30,20,10" }
+  - { name: check_hda1, command: "{{ nrpe_agent_nagios_plugins_path }}/check_disk -w 20% -c 10% -p /dev/hda1" }
+  - { name: check_zombie_procs, command: "{{ nrpe_agent_nagios_plugins_path }}/check_procs -w 5 -c 10 -s Z" }
+  - { name: check_total_procs, command: "{{ nrpe_agent_nagios_plugins_path }}/check_procs -w 200 -c 250" }
+  # Extra NRPE check commands 
+  - { name: check_cpu, command: "{{ nrpe_agent_nagios_plugins_path }}/check_cpu" }
+  - { name: check_mem, command: "{{ nrpe_agent_nagios_plugins_path }}/check_mem -w 80 -c 90 -W 65 -C 80" }
+  - { name: check_uptime, command: "{{ nrpe_agent_nagios_plugins_path }}/check_uptime" }
+  - { name: check_disk, command: "{{ nrpe_agent_nagios_plugins_path }}/check_disk -w 10% -c 5% -A --ignore-ereg-path '^/sys/.*$'" }
+  - { name: check_swap, command: "{{ nrpe_agent_nagios_plugins_path }}/check_swap -a -w 30% -c 10%" }
+  - { name: check_load_per_cpu, command: "{{ nrpe_agent_nagios_plugins_path }}/check_load -r -w 4,2,1 -c 10,5,2" }
+  - { name: check_systemctl, command: "{{ nrpe_agent_nagios_plugins_path }}/check_systemctl -s $ARG1$ -e $ARG2$" }

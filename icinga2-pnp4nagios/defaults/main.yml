@@ -1,0 +1,70 @@
+---
+# See tasks/flush_handlers.yml
+force_flush_handlers_after_role_completes: no
+
+icinga2_pnp4nagios_conf_dir: /etc/pnp4nagios
+icinga2_pnp4nagios_npcd_cfg: "{{ icinga2_pnp4nagios_conf_dir }}/npcd.cfg"
+icinga2_pnp4nagios_log_dir: /var/log/pnp4nagios
+icinga2_pnp4nagios_data_dir: /var/lib/pnp4nagios
+ 
+icinga2_pnp4nagios_httpd_htpasswd_file: /etc/nagios/icinga2.passwd
+icinga2_pnp4nagios_httpd_auth_name: "Icinga2 PNP4Nagios Access"
+
+# List of users to create an htpasswd using htpasswd Ansible module.
+# http://docs.ansible.com/ansible/htpasswd_module.html
+# A user is defined by:
+# user:
+#    name: mandatory username
+#    password: mandatory password
+#    state: optional state (present|absent), defaults to present
+icinga2_pnp4nagios_httpd_passwd_users:
+  - { name: "{{ icinga2_web2_admin_username | default('icingaadmin') }}", password: "{{ icinga2_web2_admin_password_clear | default('icingaadmin') }}" }
+
+# See https://github.com/Icinga/icingaweb2-module-pnp/releases for version number
+icinga2_pnp4nagios_module_name: icingaweb2-module-pnp
+icinga2_pnp4nagios_module_version: 1.0.1
+icinga2_pnp4nagios_module_ext: tar.gz
+# The name of the directory inside of the downloaded archive
+icinga2_pnp4nagios_module_dir: "{{ icinga2_pnp4nagios_module_name }}-{{ icinga2_pnp4nagios_module_version }}"
+icinga2_pnp4nagios_module_archive_name: "{{ icinga2_pnp4nagios_module_dir }}.{{ icinga2_pnp4nagios_module_ext }}"
+
+icinga2_pnp4nagios_module_download_url: "https://github.com/Icinga/{{ icinga2_pnp4nagios_module_name }}/archive/v{{ icinga2_pnp4nagios_module_version }}.tar.gz"
+icinga2_pnp4nagios_module_download_tmp_dir: /var/tmp
+icinga2_pnp4nagios_module_download_dest: "{{ icinga2_pnp4nagios_module_download_tmp_dir }}/{{ icinga2_pnp4nagios_module_archive_name }}"
+icinga2_pnp4nagios_module_extract_dir: "/opt"
+icinga2_pnp4nagios_module_install_dir: "{{ icinga2_web2_share_module_dir | default('/usr/share/icingaweb2/modules') }}/pnp"
+
+
+# npcd.cfg.j2 template variables
+
+# Privilege Options
+
+icinga2_pnp4nagios_user: "{{ icinga2_user | default('icinga') }} "
+icinga2_pnp4nagios_group: "{{ icinga2_group | default('icinga') }} "
+
+# icinga2_pnp4nagios_log_debug - how much should we log?
+#
+# icinga2_pnp4nagios_log_debug = <integer value>
+#
+#  0 = No logging - except errors
+#  1 = Small logging - some few more output
+#  2 = More Logging (actual ALL logs)
+# -1 = DEBUG Mode - ALL Logging and slower processing
+#
+
+icinga2_pnp4nagios_log_debug: 0
+
+
+#########################
+#                       #
+# NEEDED OPTIONS        #
+#                       #
+#########################
+
+# icinga2_pnp4nagios_perfdata_spool_dir - where we can find the
+# performance data files
+#
+# icinga2_pnp4nagios_perfdata_spool_dir = </path/to/directory/>
+#
+
+icinga2_pnp4nagios_perfdata_spool_dir: /var/spool/icinga2/perfdata

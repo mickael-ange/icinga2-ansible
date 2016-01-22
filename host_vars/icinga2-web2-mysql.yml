@@ -1,17 +1,5 @@
 ---
 
-icinga2_features:
-  - { name: api, enabled: false }
-  - { name: checker }
-  - { name: command, enabled: true }
-  - { name: compatlog, enabled: false }
-  - { name: debuglog, enabled: true }
-  - { name: graphite, enabled: false }
-  - { name: icingastatus, enabled: false }
-  - { name: livestatus, enabled: false }
-  - { name: mainlog }
-  - { name: notification }
-  - { name: opentsdb, enabled: false }
-  - { name: perfdata, enabled: false }
-  - { name: statusdata, enabled: false }
-  - { name: syslog, enabled: false }
+icinga2_pnp4nagios_log_debug: -1
+
+# See groups_vars/vagrant for Icinga 2 config

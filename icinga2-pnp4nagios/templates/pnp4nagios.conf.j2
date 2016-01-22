@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+template Host "pnp-hst" {
+  # Icinga Web 2 doesn't require the action url attribute in its own module
+  action_url = "/pnp4nagios/graph?host=$HOSTNAME$" 
+}
+
+template Service "pnp-svc" {
+  # Icinga Web 2 doesn't require the action url attribute in its own module
+  action_url = "/pnp4nagios/graph?host=$HOSTNAME$&srv=$SERVICEDESC$" 
+}

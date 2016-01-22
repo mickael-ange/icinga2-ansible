@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+# Define service templates that can be imported by Service objects
+
+# Defined NRPE service template
+template Service "nrpe-service" {
+  import "generic-service"
+  check_command = "nrpe"
+}

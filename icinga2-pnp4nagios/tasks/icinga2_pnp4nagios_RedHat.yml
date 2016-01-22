@@ -1,0 +1,7 @@
+---
+#- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: icinga2_pnp4nagios_RedHat_install_packages.yml
+- include: icinga2_pnp4nagios_RedHat_install_icingaweb2_pnp_module.yml
+- include: icinga2_pnp4nagios_RedHat_configure.yml
+- include: icinga2_pnp4nagios_RedHat_service.yml

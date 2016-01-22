@@ -1,0 +1,40 @@
+---
+- name: Download Icingaweb2's PNP module release
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { url: "{{ icinga2_pnp4nagios_module_download_url }}", dest: "{{ icinga2_pnp4nagios_module_download_dest }}" }
+
+- name: Create directory to extract PNP module
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+  with_items:
+    - "{{ icinga2_pnp4nagios_module_extract_dir }}"
+
+- name: Extract Icingaweb2 module PNP
+  become: yes
+  unarchive:
+    copy: no
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+  with_items:
+    - { src: "{{ icinga2_pnp4nagios_module_download_dest }}", dest: "{{ icinga2_pnp4nagios_module_extract_dir }}" }
+
+- name: Link Icingaweb2's PNP modules
+  become: yes
+  file:
+    state: link
+    src: "{{ item.src }}"
+    path: "{{ item.path }}"
+    owner: apache
+    group: icingaweb2
+  with_items:
+    - { src: "{{ icinga2_pnp4nagios_module_extract_dir }}/{{ icinga2_pnp4nagios_module_dir }}", path: "{{ icinga2_web2_share_dir }}/modules/pnp" }
+  notify: restart icinga2

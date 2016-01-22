@@ -3,6 +3,11 @@
 icinga2_user: icinga
 icinga2_group: icinga
 
+icinga2_conf_dir: /etc/icinga2
+icinga2_main_conf: "{{ icinga2_conf_dir }}/icinga2.conf"
+icinga2_conf_d: "{{ icinga2_conf_dir }}/conf.d"
+icinga2_scripts: "{{ icinga2_conf_dir }}/scripts"
+
 icinga2_key: "http://packages.icinga.org/icinga.key"
 icinga2_debmon_key: "http://debmon.org/debmon/repo.key"
 
@@ -29,10 +34,6 @@ icinga2_yum:
  - { package: "nagios-plugins-all" }
  - { package: "mailx" }
  - { package: "nagios-plugins-nrpe" }
-
-icinga2_conf_dir: /etc/icinga2
-icinga2_main_conf: "{{ icinga2_conf_dir }}/icinga2.conf"
-icinga2_conf_d: "{{ icinga2_conf_dir }}/conf.d"
 
 check_commands:
  check_nrpe: |

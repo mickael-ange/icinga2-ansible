@@ -7,4 +7,4 @@ icinga2_ido_db_user_table_privileges: SELECT,INSERT,UPDATE,DELETE
 icinga2_ido_db_user_sequence_privileges: USAGE
 
 icinga2_ido_schema: /usr/share/icinga2-ido-pgsql/schema/pgsql.sql
-icinga2_ido_feature_conf: /etc/icinga2/features-available/ido-pgsql.conf
+icinga2_ido_feature_conf: "{{ icinga2_conf_dir }}/features-available/ido-pgsql.conf"

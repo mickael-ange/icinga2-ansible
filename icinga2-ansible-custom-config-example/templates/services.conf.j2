@@ -1,0 +1,59 @@
+# {{ ansible_managed }}
+# Define monitoring services to be applied to a bunch of hosts
+
+{# For all defined services in dictionary icinga2_conf_apply_nrpe_services, we #}
+{# create a Service object. #}
+### Apply NRPE services
+{% for service in icinga2_conf_apply_nrpe_services %}
+apply Service "{{ service.name }}" {
+  import "nrpe-service"
+  vars.nrpe_command = "{{ service.nrpe_command }}"
+{# Service is applied to every Linux host #}
+  assign where host.vars.os == "Linux"
+}
+
+{% endfor %}
+
+### Systemctl Services
+
+apply Service "nginx-systemctl" {
+  import "nrpe-service"
+  vars.nrpe_command = "check_systemctl"
+  vars.nrpe_arguments = [ "nginx", host.vars.services.nginx.systemclt_state ]
+  assign where host.vars.os == "Linux" && host.vars.services.nginx
+}
+
+apply Service "httpd-systemctl" {
+  import "nrpe-service"
+  vars.nrpe_command = "check_systemctl"
+  vars.nrpe_arguments = [ "httpd", host.vars.services.httpd.systemclt_state ]
+  assign where host.vars.os == "Linux" && host.vars.services.httpd
+}
+
+apply Service "npcd-systemctl" {
+  import "nrpe-service"
+  vars.nrpe_command = "check_systemctl"
+  vars.nrpe_arguments = [ "npcd", host.vars.services.npcd.systemclt_state ]
+  assign where host.vars.os == "Linux" && host.vars.services.npcd
+}
+
+apply Service "firewalld-systemctl" {
+  import "nrpe-service"
+  vars.nrpe_command = "check_systemctl"
+  vars.nrpe_arguments = [ "firewalld", host.vars.services.firewalld.systemclt_state ]
+  assign where host.vars.os == "Linux" && host.vars.services.firewalld
+}
+
+apply Service "crond-systemctl" {
+  import "nrpe-service"
+  vars.nrpe_command = "check_systemctl"
+  vars.nrpe_arguments = [ "crond", host.vars.services.crond.systemclt_state ]
+  assign where host.vars.os == "Linux" && host.vars.services.crond
+}
+
+apply Service "postfix-systemctl" {
+  import "nrpe-service"
+  vars.nrpe_command = "check_systemctl"
+  vars.nrpe_arguments = [ "postfix", host.vars.services.postfix.systemclt_state ]
+  assign where host.vars.os == "Linux" && host.vars.services.postfix
+}

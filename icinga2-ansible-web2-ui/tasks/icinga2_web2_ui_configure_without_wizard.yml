@@ -17,14 +17,14 @@
     owner: apache
     group: icingaweb2
   with_items:
-    - { src: /usr/share/icingaweb2/modules/monitoring, path: /etc/icingaweb2/enabledModules/monitoring }
+    - { src: "{{ icinga2_web2_share_dir }}/modules/monitoring", path: "{{ icinga2_web2_conf_dir }}/enabledModules/monitoring" }
   when: icingaweb_user_does_not_exist or icinga2_web2_setup_reinstate
 
 - name: Configure Icinga Web 2
   become: yes
   template: 
     src: "{{ item }}.j2"
-    dest: "/etc/icingaweb2/{{ item }}"
+    dest: "{{ icinga2_web2_conf_dir }}/{{ item }}"
     backup: yes
     owner: apache
     group: icingaweb2

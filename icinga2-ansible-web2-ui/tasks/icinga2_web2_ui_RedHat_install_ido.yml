@@ -20,6 +20,8 @@
     backup: yes
     owner: icinga
     group: icinga
+  notify:
+   - restart icinga2
 
 - name: Enable Icinga2 Ido Feature
   command: "icinga2 feature enable ido-{{ icinga2_ido_backend }}"

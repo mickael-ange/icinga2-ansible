@@ -1,0 +1,54 @@
+---
+- name: Create environment configuration directory
+  become: yes
+  file: 
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ icinga2_user }}"
+    group: "{{ icinga2_group }}"
+    mode: 0755
+  with_items: 
+    - "{{ icinga2_conf_environment_dir }}"
+
+- name: Override icinga2's default configuration
+  become: yes
+  template:
+    backup: yes
+    src: "defaults/{{ item }}.j2"
+    dest: "{{ icinga2_conf_d }}/{{ item }}"
+    owner: "{{ icinga2_user }}"
+    group: "{{ icinga2_group }}"
+    mode: 0664
+  with_items:
+    - hosts.conf
+    - services.conf
+    - groups.conf
+    - templates.conf
+  notify: restart icinga2
+
+- name: Configure icinga2 custom configuration
+  become: yes
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ icinga2_conf_environment_dir }}/{{ item }}"
+    owner: "{{ icinga2_user }}"
+    group: "{{ icinga2_group }}"
+    mode: 0664
+  with_items:
+    - hosts.conf
+    - service-groups.conf
+    - service-templates.conf
+    - services.conf
+  notify: restart icinga2
+
+- name: Configure icinga2 static configuration
+  become: yes
+  copy:
+    src: "{{ item }}"
+    dest: "{{ icinga2_conf_environment_dir }}/{{ item }}"
+    owner: "{{ icinga2_user }}"
+    group: "{{ icinga2_group }}"
+    mode: 0664
+  with_items:
+    - constants.conf
+  notify: restart icinga2

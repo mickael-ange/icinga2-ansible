@@ -1,6 +1,10 @@
 ---
 # defaults file for icinga2-ansible-web2-ui
 
+icinga2_web2_conf_dir: /etc/icingaweb2
+icinga2_web2_share_dir: /usr/share/icingaweb2
+icinga2_web2_share_module_dir: "{{ icinga2_web2_share_dir }}/modules"
+
 ### IDO Backend
 
 # If BD backend server is external (true), no DB server will be installed
@@ -62,3 +66,4 @@ icinga2_web2_admin_role: Administrators
 icinga2_web2_admin_username: icingaadmin
 # Defaults: admin password defaults to "icingaadmin" ($1$Eo9Dehff$puwt5xO8bJ6Crrb60J7Wc0)
 icinga2_web2_admin_password_hash: '$1$Eo9Dehff$puwt5xO8bJ6Crrb60J7Wc0'
+icinga2_web2_admin_password_clear: icingaadmin

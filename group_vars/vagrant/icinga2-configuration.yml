@@ -1,0 +1,57 @@
+---
+# Yes, I like to have same config everywhere
+nrpe_agent_force_install_nrpe_on_monitoring_servers: yes
+
+### Icinga2 configuration
+
+# Linux hosts configuration
+icinga2_conf_linux_hosts:
+### VAGRANT env
+  - name: icinga2
+    address: 127.0.0.1
+    services:
+      - httpd:
+          systemclt_state: active
+        npcd:
+          systemclt_state: active
+        firewalld:
+          systemclt_state: active
+        crond:
+          systemclt_state: active
+        postfix:
+          systemclt_state: active
+
+icinga2_conf_users:
+  - { name: admin, display_name: "The super admin", email: admin@example.com }
+#  - { name: admin, display_name: "The super admin", email: admin@example.com, groups: [ "group1", "group2" ] }
+
+# NRPE Services configuration
+icinga2_conf_apply_nrpe_services:
+  - { name: check_users, nrpe_command: check_users }
+  - { name: check_load, nrpe_command: check_load }
+  - { name: check_load_per_cpu, nrpe_command: check_load_per_cpu }
+#  - { name: check_hda1, nrpe_command: check_hda1 }
+  - { name: check_zombie_procs, nrpe_command: check_zombie_procs }
+  - { name: check_total_procs, nrpe_command: check_total_procs }
+  - { name: check_cpu, nrpe_command: check_cpu }
+  - { name: check_mem, nrpe_command: check_mem }
+  - { name: check_uptime, nrpe_command: check_uptime }
+  - { name: check_disk, nrpe_command: check_disk }
+  - { name: check_swap, nrpe_command: check_swap }
+
+icinga2_features:
+  - { name: api, enabled: false }
+  - { name: checker }
+  - { name: command, enabled: true }
+  - { name: compatlog, enabled: false }
+  - { name: debuglog, enabled: true }
+  - { name: graphite, enabled: false }
+  - { name: icingastatus, enabled: false }
+  - { name: livestatus, enabled: false }
+  - { name: mainlog }
+  - { name: notification }
+  - { name: opentsdb, enabled: false }
+  - { name: perfdata, enabled: true }
+  - { name: statusdata, enabled: false }
+  - { name: syslog, enabled: false }
+  

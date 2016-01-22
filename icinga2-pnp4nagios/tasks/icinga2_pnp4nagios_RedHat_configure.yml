@@ -1,0 +1,84 @@
+---
+- name: Configure NPCD
+  become: yes
+  template:
+    src: "{{ item.src }}.j2"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: npcd.cfg, dest: "{{ icinga2_pnp4nagios_npcd_cfg }}" }
+  notify: restart npcd
+
+- name: Ensure pnp4nagios working directories owner
+  become: yes
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: "{{ icinga2_user }}"
+    group: "{{ icinga2_group }}"
+    recurse: yes
+  with_items:
+    - "{{ icinga2_pnp4nagios_log_dir }}"
+    - "{{ icinga2_pnp4nagios_data_dir }}"
+  notify: restart npcd
+
+- name: Configure a htpasswd for users
+  become: yes
+  no_log: True
+  htpasswd: 
+    name: "{{ item.name }}"
+    state: "{{ item.state | default('present') }}"
+    path: "{{ icinga2_pnp4nagios_httpd_htpasswd_file }}"
+    create: yes
+    password: "{{ item.password }}"
+  with_items: icinga2_pnp4nagios_httpd_passwd_users
+  notify: reload httpd
+
+- name: Ensure htpasswd file has wanted permissions and owner
+  become: yes
+  file:
+    state: file
+    path: "{{ item }}"
+    mode: 0640
+    owner: root
+    group: apache
+  with_items:
+    - "{{ icinga2_pnp4nagios_httpd_htpasswd_file }}"
+
+- name: Configure PNP4Nagios HTTPD config
+  become: yes
+  template:
+    src: "{{ item.src }}.j2"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: pnp4nagios-httpd.conf, dest: /etc/httpd/conf.d/pnp4nagios.conf }
+  notify: reload httpd
+
+# Looks like not necessary for Icinga Web 2
+#- name: Add PNP4Nagios host and service templates
+#  become: yes
+#  template:
+#    src: "{{ item }}.j2"
+#    dest: "{{ icinga2_conf_d }}/{{ item }}"
+#    owner: "{{ icinga2_user }}"
+#    group: "{{ icinga2_group }}"
+#    mode: 0640
+#  with_items:
+#    - pnp4nagios.conf
+#  notify: restart icinga2
+
+- name: Enable Icingaweb2's PNP modules
+  become: yes
+  file:
+    state: link
+    src: "{{ item.src }}"
+    path: "{{ item.path }}"
+    owner: apache
+    group: icingaweb2
+  with_items:
+    - { src: "{{ icinga2_web2_share_dir }}/modules/pnp", path: "{{ icinga2_web2_conf_dir }}/enabledModules/pnp" }

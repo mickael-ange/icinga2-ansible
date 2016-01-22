@@ -4,15 +4,18 @@
 - include_vars: "{{ ansible_os_family }}.yml"
 
 - include: icinga2_nrpe_agent_RedHat.yml
-  when: ansible_os_family == 'RedHat' and 'monitoring_servers' not in group_names
+  when: ansible_os_family == 'RedHat' and
+        ('monitoring_servers' not in group_names or nrpe_agent_force_install_nrpe_on_monitoring_servers)
   # NRPE Agent will be installed on clients only
 
 - include: icinga2_nrpe_agent_Debian.yml
-  when: ansible_os_family == 'Debian' and 'monitoring_servers' not in group_names
+  when: ansible_os_family == 'Debian' and
+        ('monitoring_servers' not in group_names or nrpe_agent_force_install_nrpe_on_monitoring_servers)
   # NRPE Agent will be installed on clients only
 
 - include: icinga2_nrpe_agent_Gentoo.yml
-  when: ansible_os_family == 'Gentoo' and 'monitoring_servers' not in group_names
+  when: ansible_os_family == 'Gentoo' and
+        ('monitoring_servers' not in group_names or nrpe_agent_force_install_nrpe_on_monitoring_servers)
   # NRPE Agent will be installed on clients only
 
 - include: icinga2_nrpe_agent_extra_nagios_plugins.yml

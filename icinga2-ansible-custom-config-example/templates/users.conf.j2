@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+# Define users who might receive notifications
+
+{# For all defined users in dictionary icinga2_conf_users, we create a User object #}
+{% for user in icinga2_conf_users %}
+object User "{{ user.name }}" {
+  import "generic-user"
+{%  if user.display_name is defined %}
+  display_name = "{{ user.display_name }}"
+{%  endif %}
+{%  if user.groups is defined %}
+  groups = {{ user.groups | to_json }}
+{%  else %}
+{# Defaults to icingaadmins group #}
+  groups = [ "icingaadmins" ]
+{%  endif %}
+{%  if user.email is defined %}
+  email = "{{ user.email }}"
+{%  endif %}
+}
+
+{% endfor %}

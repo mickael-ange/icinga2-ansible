@@ -1,0 +1,31 @@
+# {{ ansible_managed }}
+
+# Linux hosts
+{# For all defined Linux hosts in dictionary icinga2_conf_linux_hosts, we create a Host object #}
+{% for host in icinga2_conf_linux_hosts %}
+object Host "{{ host.name }}" {
+{# Import template #}
+  import "generic-host"
+{# Set host's address #}
+  address = "{{ host.address }}"
+  vars.os = "Linux"
+  vars.sla = "24x7"
+  vars.notification["mail"] = {
+    /* The UserGroup `icingaadmins` is defined in `users.conf`. */
+    groups = [ "icingaadmins" ]
+  }
+
+{# If the host runs services, create a custom variables for each services #}
+{# to be able to apply service based on it. See services.conf.j2. #}
+{%  if host.services is defined %}
+{%      for service in host.services %}
+{%          for servicekey, servicevars in service.iteritems() %}
+{%              for varkey, varvalue in servicevars.iteritems() %}
+  vars.services.{{ servicekey }}.{{ varkey }} = "{{ varvalue }}"
+{%              endfor %}
+{%          endfor %}
+{%      endfor %}
+{%  endif %}
+}
+
+{% endfor %}

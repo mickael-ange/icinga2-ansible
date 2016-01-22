@@ -1,0 +1,36 @@
+---
+# Custom config directory name
+icinga2_conf_environment: custom-config
+# Full path the custom config directory
+icinga2_conf_environment_dir: "{{ icinga2_conf_d }}/{{ icinga2_conf_environment }}"
+
+icinga2_conf_linux_hosts: []
+# - { name: localhost,        address: 127.0.0.1 }
+# - { name: icinga2,          address: icinga2.example.com }
+
+icinga2_conf_users: []
+# A list of users:
+# user: 
+#    name: mandatory String
+#    email: optional String
+#    display_name: optional String
+#    groups: optional String list (defaults: [ "icingaadmin" ])
+#
+# icinga2_conf_users:
+#  - { name: admin }
+#  - { name: admin, email: admin@example.com }
+#  - { name: admin, display_name: "The super admin", email: admin@example.com }
+#  - { name: admin, display_name: "The super admin", email: admin@example.com, groups: [ 'group1', "group2" ] }
+
+icinga2_conf_apply_nrpe_services: []
+#  - { name: check_users, nrpe_command: check_users }
+#  - { name: check_load, nrpe_command: check_load }
+#  - { name: check_load_per_cpu, nrpe_command: check_load_per_cpu }
+#  - { name: check_hda1, nrpe_command: check_hda1 }
+#  - { name: check_zombie_procs, nrpe_command: check_zombie_procs }
+#  - { name: check_total_procs, nrpe_command: check_total_procs }
+#  - { name: check_cpu, nrpe_command: check_cpu }
+#  - { name: check_mem, nrpe_command: check_mem }
+#  - { name: check_uptime, nrpe_command: check_uptime }
+#  - { name: check_disk, nrpe_command: check_disk }
+#  - { name: check_swap, nrpe_command: check_swap }

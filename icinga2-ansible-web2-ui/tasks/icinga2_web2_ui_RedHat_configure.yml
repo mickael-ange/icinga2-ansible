@@ -8,11 +8,17 @@
     state: present
     system: yes
 
-- name: Add httpd as member of icingaweb2
+- name: Ensure users are members of groups
   user:
-    name: httpd
+    name: "{{ item.name }}"
     append: yes
-    groups: icingaweb2
+    groups: "{{ item.groups }}"
+  with_items:
+    - { name: httpd, groups: 'icingaweb2' }
+    - { name: apache, groups: 'icingacmd,nagios,icingaweb2' }
+    - { name: "{{ icinga2_user }}", groups: 'icingacmd,nagios' }
+  notify: 
+  - restart icinga2
 
 - name: Create some directories
   become: yes
@@ -23,9 +29,9 @@
     group: icingaweb2
     mode: 0770
   with_items:
-    - /etc/icingaweb2/modules
-    - /etc/icingaweb2/modules/monitoring
-    - /etc/icingaweb2/enabledModules
+    - "{{ icinga2_web2_conf_dir }}/modules"
+    - "{{ icinga2_web2_conf_dir }}/modules/monitoring"
+    - "{{ icinga2_web2_conf_dir }}/enabledModules"
 
 - include: icinga2_web2_ui_configure_with_wizard.yml
   when: icinga2_web2_setup_with_wizard

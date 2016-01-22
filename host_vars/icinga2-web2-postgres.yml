@@ -17,18 +17,6 @@ pgsql_authorizations:
   - { type: host, database: "{{ icinga2_web2_db }}", user: "{{ icinga2_web2_db_user }}", address: '::1/128', method: md5 }
   - { type: host, database: "{{ icinga2_web2_db }}", user: "{{ icinga2_web2_db_user }}", address: 172.16.1.1/32, method: md5 }
 
-icinga2_features:
-  - { name: api, enabled: false }
-  - { name: checker }
-  - { name: command, enabled: true }
-  - { name: compatlog, enabled: false }
-  - { name: debuglog, enabled: true }
-  - { name: graphite, enabled: false }
-  - { name: icingastatus, enabled: false }
-  - { name: livestatus, enabled: false }
-  - { name: mainlog }
-  - { name: notification }
-  - { name: opentsdb, enabled: false }
-  - { name: perfdata, enabled: false }
-  - { name: statusdata, enabled: false }
-  - { name: syslog, enabled: false }
+icinga2_pnp4nagios_log_debug: -1
+
+# See groups_vars/vagrant for Icinga 2 config

@@ -1,4 +1,7 @@
 ---
+# Why not installing NRPE on icinga2? make the config simpler sometime
+nrpe_agent_force_install_nrpe_on_monitoring_servers: no
+
 # defaults file for icinga2-nrpe-agent
 
 nrpe_agent_config: /etc/nagios/nrpe.cfg

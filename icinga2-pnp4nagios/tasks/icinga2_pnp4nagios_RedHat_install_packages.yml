@@ -1,0 +1,18 @@
+---
+- name: Install required packages
+  become: yes
+  yum: 
+    pkg: "{{ item }}"
+    state: present
+  with_items:
+    # For htpasswd Ansible module
+    - python-passlib
+
+- name: Install PNP4Nagios package
+  become: yes
+  yum: 
+    pkg: "{{ item }}"
+    state: present
+  with_items:
+    - pnp4nagios
+  notify: reload httpd

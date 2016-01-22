@@ -12,8 +12,8 @@
   become: yes
   command: "{{ item }}"
   with_items:
-    - semanage fcontext -a -t httpd_sys_rw_content_t "/etc/icingaweb2(/.*)?"
-    - restorecon -Rv "/etc/icingaweb2"
+    - semanage fcontext -a -t httpd_sys_rw_content_t "{{ icinga2_web2_conf_dir }}(/.*)?"
+    - restorecon -Rv "{{ icinga2_web2_conf_dir }}"
   changed_when: False
 
 - name: "Make SElinux happy with the network"

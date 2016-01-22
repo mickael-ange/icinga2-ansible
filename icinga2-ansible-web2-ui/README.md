@@ -37,11 +37,12 @@ Then Go to http://IP/icingaweb2 and use icingaadmin/icingaadmin to login.
 Role Variables
 --------------
 
-See [defaults/main.yml](defaults/main.yml).
-See [vars/mysql-ido-backend.yml](vars/mysql-ido-backend.yml) for MySQL IDO backend variables.
-See [vars/mysql-web2-backend.yml](vars/mysql-web2-backend.yml) for MySQL Web2 backend variables.
-See [vars/pqsql-ido-backend.yml](vars/pqsql-ido-backend.yml) for PgSQL IDO backend variables.
-See [vars/pqsql-web2-backend.yml](vars/pqsql-web2-backend.yml) for PgSQL Web2 backend variables.
+See variables:
+* [defaults/main.yml](defaults/main.yml)
+* [vars/mysql-ido-backend.yml](vars/mysql-ido-backend.yml) for MySQL IDO backend variables
+* [vars/mysql-web2-backend.yml](vars/mysql-web2-backend.yml) for MySQL Web2 backend variables
+* [vars/pqsql-ido-backend.yml](vars/pqsql-ido-backend.yml) for PgSQL IDO backend variables
+* See [vars/pqsql-web2-backend.yml](vars/pqsql-web2-backend.yml) for PgSQL Web2 backend variables
 
 License
 -------

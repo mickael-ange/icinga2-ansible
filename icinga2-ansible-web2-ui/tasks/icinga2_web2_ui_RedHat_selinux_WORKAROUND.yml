@@ -1,0 +1,17 @@
+---
+#### Workaround: will work on SELinux later
+# Known problems:
+# - notification scripts in /etc/icinga2/scripts (see doc/icinga2-web2-vagrant.md#selinux-notification-scripts)
+
+- name: "WORKAROUND - SELinux set permissive mode"
+  become: yes
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: "WORKAROUND - SELinux set permissive mode"
+  become: yes
+  command: setenforce 0
+  changed_when: False
+
+  

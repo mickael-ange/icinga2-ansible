@@ -1,5 +1,10 @@
 # About Icinga2 Ansible Roles
 
+
+### CAUTION this fork has been tested only with the following distro
+
+* CentOS 7 x86
+
 ### What is an Ansible role?
 
 Ansible roles are pre-packaged units of automation. Once downloaded, roles can be dropped into Ansible PlayBooks and immediately applied to servers.

@@ -1,0 +1,12 @@
+---
+- name: Ensure npcd enabled
+  become: yes
+  service:
+    name: npcd
+    enabled: yes
+
+- name: Ensure npcd started
+  become: yes
+  service:
+    name: npcd
+    state: started

@@ -1,0 +1,63 @@
+# {{ ansible_managed }}
+
+# Define some service groups
+
+object ServiceGroup "nrpe" {
+  display_name = "NRPE Checks"
+
+  assign where match("nrpe*", service.check_command)
+}
+
+object ServiceGroup "mem" {
+  display_name = "Free Memory Checks"
+
+  assign where match("check_mem*", service.name)
+}
+
+object ServiceGroup "swap" {
+  display_name = "Free Swap Memory Checks"
+
+  assign where match("check_swap*", service.name)
+}
+
+object ServiceGroup "cpu" {
+  display_name = "CPU Usage Checks"
+
+  assign where match("check_cpu*", service.name)
+}
+
+object ServiceGroup "disk" {
+  display_name = "Disk Usage Checks"
+
+  assign where match("check_disk*", service.name)
+}
+
+object ServiceGroup "uptime" {
+  display_name = "Uptime Checks"
+
+  assign where match("check_uptime*", service.name)
+}
+
+object ServiceGroup "procs" {
+  display_name = "Process Checks"
+
+  assign where match("*_procs*", service.name)
+}
+
+object ServiceGroup "zombie-procs" {
+  display_name = "Zombie Process Checks"
+
+  assign where match("*_zombie_procs", service.name)
+}
+
+object ServiceGroup "ssh" {
+  display_name = "SSH Checks"
+
+  assign where match("ssh*", service.name)
+}
+
+object ServiceGroup "systemctl" {
+  display_name = "Systemctl Checks"
+
+  assign where match("*-systemctl", service.name)
+}

@@ -1,0 +1,6 @@
+---
+- name: restart icinga2
+  become: yes
+  service:
+    name: icinga2
+    state: restarted

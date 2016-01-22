@@ -1,0 +1,5 @@
+---
+- include: icinga2_pnp4nagios_RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: flush_handlers.yml
