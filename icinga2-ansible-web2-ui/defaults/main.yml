@@ -1,9 +1,30 @@
 ---
 # defaults file for icinga2-ansible-web2-ui
 
+# See tasks/flush_handlers.yml
+force_flush_handlers_after_role_completes: no
+
 icinga2_web2_conf_dir: /etc/icingaweb2
 icinga2_web2_share_dir: /usr/share/icingaweb2
 icinga2_web2_share_module_dir: "{{ icinga2_web2_share_dir }}/modules"
+
+# If you want to manage php.ini with icinga2-ansible-web2-ui role, set:
+# icinga2_php_ini_managed: yes
+# If you want to manage php.ini from another role such as geerlingguy/ansible-role-php then set:
+# # icinga2_php_ini_managed: no
+# and configure the role accordingly (e.g. php_date_timezone)
+icinga2_php_ini_managed: no
+# All icinga2_php_ini_* variables are ignored if icinga2_php_ini_managed is set to "no"
+icinga2_php_ini_file: /etc/php.ini
+# Create a backup file including the timestamp information so you can get the original file back if you somehow clobbered it incorrectly.
+icinga2_php_ini_file_backup: yes
+# Configure php.ini (see tasks/icinga2_web2_ui_configure_php_ini.yml)
+# icinga2_php_ini_config a list of options to configure
+icinga2_php_ini_config:
+  # For instance: update php.ini timezone:
+  # [Date]
+  # date.timezone = America/Chicago
+  - { section: Date, option: date.timezone, value: America/Chicago }
 
 ### IDO Backend
 

@@ -1,0 +1,10 @@
+---
+- name: Configure php.ini
+  ini_file:
+    dest: "{{ icinga2_php_ini_file }}"
+    section: "{{ item.section }}"
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    backup: "{{ icinga2_php_ini_file_backup }}"
+  with_items: icinga2_php_ini_config
+  notify: reload httpd

@@ -5,3 +5,9 @@
     name: icinga2
     state: restarted
     enabled: yes
+
+- name: reload httpd
+  become: yes
+  service:
+    name: httpd
+    state: reloaded

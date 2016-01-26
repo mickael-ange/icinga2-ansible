@@ -13,3 +13,5 @@
 
 - include: icinga2_web2_ui_create_admin_user.yml
   when: not icinga2_web2_setup_with_wizard
+
+- include: flush_handlers.yml

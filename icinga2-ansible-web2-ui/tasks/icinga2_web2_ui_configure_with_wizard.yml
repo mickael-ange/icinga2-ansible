@@ -13,9 +13,8 @@
   command: icingacli setup token create
   args:
     creates: "{{ icinga2_web2_conf_dir }}/setup.token"
-  when: icinga2_web2_setup_with_wizard and icingaweb_user_does_not_exist
+  when: icingaweb_user_does_not_exist
 
 - name: Icinga Web2 Installation finished (RH)
   debug: msg="Now go at http://IP/icingaweb2/setup to continue the installation"
   tags: icinga2-ansible-web2-ui-install
-  when: icinga2_web2_setup_with_wizard

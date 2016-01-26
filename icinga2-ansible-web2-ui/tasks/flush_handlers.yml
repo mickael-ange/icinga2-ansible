@@ -1,0 +1,15 @@
+---
+# Handlers are evil sometimes!
+# My choice is to call handlers after a role completes but only if:
+# - force_flush_handlers_after_role_completes: true | yes
+#
+# Pro: 
+#   - flush handler after role complete to avoid an unexpected task failing later in another role in the play
+#   - Allow to keep roles more independent from handlers called
+# Con: 
+#   - Handlers are triggered several times if different roles call the same handlers.
+#   - Handlers might not be called if a task fails in side of the role
+
+- name: Flush handlers at the end of the role
+  meta: flush_handlers
+  when: force_flush_handlers_after_role_completes

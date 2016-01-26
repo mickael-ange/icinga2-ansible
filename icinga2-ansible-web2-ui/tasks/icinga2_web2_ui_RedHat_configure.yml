@@ -38,3 +38,6 @@
 
 - include: icinga2_web2_ui_configure_without_wizard.yml
   when: not icinga2_web2_setup_with_wizard
+
+- include: icinga2_web2_ui_configure_php_ini.yml
+  when: icinga2_php_ini_managed
