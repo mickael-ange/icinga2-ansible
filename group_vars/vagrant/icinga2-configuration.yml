@@ -11,15 +11,15 @@ icinga2_conf_linux_hosts:
     address: 127.0.0.1
     services:
       - httpd:
-          systemclt_state: active
+          systemctl_state: active
         npcd:
-          systemclt_state: active
+          systemctl_state: active
         firewalld:
-          systemclt_state: active
+          systemctl_state: active
         crond:
-          systemclt_state: active
+          systemctl_state: active
         postfix:
-          systemclt_state: active
+          systemctl_state: active
 
 icinga2_conf_users:
   - { name: admin, display_name: "The super admin", email: admin@example.com }

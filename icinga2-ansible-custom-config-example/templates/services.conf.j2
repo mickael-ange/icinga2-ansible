@@ -19,41 +19,41 @@ apply Service "{{ service.name }}" {
 apply Service "nginx-systemctl" {
   import "nrpe-service"
   vars.nrpe_command = "check_systemctl"
-  vars.nrpe_arguments = [ "nginx", host.vars.services.nginx.systemclt_state ]
+  vars.nrpe_arguments = [ "nginx", host.vars.services.nginx.systemctl_state ]
   assign where host.vars.os == "Linux" && host.vars.services.nginx
 }
 
 apply Service "httpd-systemctl" {
   import "nrpe-service"
   vars.nrpe_command = "check_systemctl"
-  vars.nrpe_arguments = [ "httpd", host.vars.services.httpd.systemclt_state ]
+  vars.nrpe_arguments = [ "httpd", host.vars.services.httpd.systemctl_state ]
   assign where host.vars.os == "Linux" && host.vars.services.httpd
 }
 
 apply Service "npcd-systemctl" {
   import "nrpe-service"
   vars.nrpe_command = "check_systemctl"
-  vars.nrpe_arguments = [ "npcd", host.vars.services.npcd.systemclt_state ]
+  vars.nrpe_arguments = [ "npcd", host.vars.services.npcd.systemctl_state ]
   assign where host.vars.os == "Linux" && host.vars.services.npcd
 }
 
 apply Service "firewalld-systemctl" {
   import "nrpe-service"
   vars.nrpe_command = "check_systemctl"
-  vars.nrpe_arguments = [ "firewalld", host.vars.services.firewalld.systemclt_state ]
+  vars.nrpe_arguments = [ "firewalld", host.vars.services.firewalld.systemctl_state ]
   assign where host.vars.os == "Linux" && host.vars.services.firewalld
 }
 
 apply Service "crond-systemctl" {
   import "nrpe-service"
   vars.nrpe_command = "check_systemctl"
-  vars.nrpe_arguments = [ "crond", host.vars.services.crond.systemclt_state ]
+  vars.nrpe_arguments = [ "crond", host.vars.services.crond.systemctl_state ]
   assign where host.vars.os == "Linux" && host.vars.services.crond
 }
 
 apply Service "postfix-systemctl" {
   import "nrpe-service"
   vars.nrpe_command = "check_systemctl"
-  vars.nrpe_arguments = [ "postfix", host.vars.services.postfix.systemclt_state ]
+  vars.nrpe_arguments = [ "postfix", host.vars.services.postfix.systemctl_state ]
   assign where host.vars.os == "Linux" && host.vars.services.postfix
 }
