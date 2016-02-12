@@ -45,8 +45,7 @@ icinga2_ido_db: icinga
 icinga2_ido_db_host: localhost
 icinga2_ido_db_user: icinga
 icinga2_ido_db_pass: icinga
-# Password expire date (For pgsql)
-icinga2_ido_db_pass_expires: infinity
+
 enablerepo: "base"
 
 ### Web2 Backend
@@ -74,8 +73,6 @@ icinga2_web2_db: icingaweb2
 icinga2_web2_db_host: "{{ icinga2_ido_db_host }}"
 icinga2_web2_db_user: icingaweb2
 icinga2_web2_db_pass: icingaweb2
-# Password expire date (For pgsql)
-icinga2_web2_db_pass_expires: "{{ icinga2_ido_db_pass_expires }}"
 
 icinga2_web2_ui_port: 80
 icinga2_web2_ui_rpm:

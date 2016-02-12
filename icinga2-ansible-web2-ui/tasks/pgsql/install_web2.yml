@@ -38,7 +38,6 @@
   postgresql_user:
     name: "{{ item.name }}"
     password: "{{ icinga2_web2_db_pass }}"
-    expires: "{{ icinga2_web2_db_pass_expires }}"
     db: "{{ item.db }}"
     login_host: "{{ icinga2_web2_db_host }}"
     port: "{{ icinga2_web2_db_port }}"

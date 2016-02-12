@@ -14,7 +14,7 @@
 
 - name: MYSQL | Copy create-admin.sql script
   template:
-    src: ../../templates/create-admin.sql.j2
+    src: create-admin.sql.j2
     dest: /tmp/create-admin.sql
   register: create_admin_sql
   when: icingaweb_admin.stdout == ""

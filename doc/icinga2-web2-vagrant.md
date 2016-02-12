@@ -10,7 +10,7 @@ Icinga Web2 credentials:
 
 ## Pre-requisites
 
-* [Ansible](http://docs.ansible.com/ansible/intro_installation.html#installing-the-control-machine) v1.9.4+
+* [Ansible](http://docs.ansible.com/ansible/intro_installation.html#installing-the-control-machine) v2.0+
 * [Librarian-Ansible](https://github.com/bcoe/librarian-ansible) v1.0.6+ to manage Ansible's dependencies
 * [VirtualBox](https://www.virtualbox.org/wiki/Downloads) v5.0+
 * [Vagrant](https://www.vagrantup.com/downloads.html) v1.7.4+
