@@ -4,7 +4,7 @@
 - name: Install packages for Web2 on RedHat OS family
   yum:
     name: "{{ item }}"
-    state: latest
+    state: present
   with_items: icinga2_web2_yum_packages
 
 - include: mysql/install_web2.yml

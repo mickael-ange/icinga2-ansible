@@ -2,7 +2,7 @@
 - name: Install Requirements on RedHat OS family (Fedora)
   yum:
     name: "{{ item.package }}"
-    state: latest
+    state: present
   with_items: req_pkg
   when: ansible_distribution == 'Fedora'
 
@@ -25,7 +25,7 @@
 - name: Install Icinga2 on RedHat OS family
   yum: 
     name: "{{ item.package }}"
-    state: latest
+    state: present
   with_items: icinga2_yum
 
 - name: Start Icinga2

@@ -1,14 +1,14 @@
 ---
 - name: Install IDO {{ icinga2_web_ui_ido }} on RedHat OS family
   yum: name=icinga2-ido-{{ icinga2_web_ui_ido }} 
-       state=latest
+       state=present
 
 - include: icinga2_web_ui_mysql_RedHat_install.yml
   when: icinga2_web_ui_ido == "mysql"
 
 - name: Install Icinga Web on RedHat OS family
   yum: name={{ item.package }}
-       state=latest
+       state=present
   with_items: icinga2_web_ui_rpm
 
 - name: Create a Database for Icinga Web

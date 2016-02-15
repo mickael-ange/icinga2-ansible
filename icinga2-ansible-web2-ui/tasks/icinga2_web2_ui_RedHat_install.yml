@@ -2,7 +2,7 @@
 - name: Install Icinga Web2 on RedHat OS family
   yum:
     name: "{{ item.package }}"
-    state: latest
+    state: present
     enablerepo: "{{ enablerepo }}"
   with_items: icinga2_web2_ui_rpm
   tags: icinga2-ansible-web2-ui-install

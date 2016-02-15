@@ -30,7 +30,7 @@
   apt: 
     pkg: "{{ item.package }}"
     update_cache: yes
-    state: latest
+    state: present
     install_recommends: no
   with_items: icinga2_pkg
 
