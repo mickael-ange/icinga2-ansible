@@ -60,4 +60,3 @@ icinga2_features: []
 #  - { name: statusdata, enabled: false }
 #  - { name: syslog, enabled: false }
 
-icinga2_user_icingaadmin_email: icinga@localhost
